@@ -1,0 +1,7 @@
+D:\VS projects\CookBook\CookBook\CookBook\bin\Debug\CookBook.exe.config
+D:\VS projects\CookBook\CookBook\CookBook\bin\Debug\CookBook.exe
+D:\VS projects\CookBook\CookBook\CookBook\bin\Debug\CookBook.pdb
+D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyReference.cache
+D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
+D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.exe
+D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.pdb

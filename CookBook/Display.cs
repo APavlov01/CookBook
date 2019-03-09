@@ -33,23 +33,77 @@ namespace CookBook
         {
             string[] commands = { "add", "delete", "search", "exit" };
             Console.Write("\nChoose an option: ");
-            var choice = Console.ReadLine();
-            while (choice == "")
-            {
-                Console.Write("\nChoose an option: ");
-                choice = Console.ReadLine();
-            }
-            choice = choice.ToLower();
-            if (!commands.Contains(choice))
+            var choice = Console.ReadLine().ToLower();
+            while (!commands.Contains(choice))
             {
                 Console.WriteLine("Choice not valid!");
-                GetCommand();
+                Console.Write("\nChoose an option: ");
+                choice = Console.ReadLine().ToLower();
             }
             if (choice == "exit")
             {
                 Environment.Exit(0);
             }
             return choice;
+        }
+
+
+        private string RecipeName;
+        private List<string> ingredients=new List<string>();
+        private string RecipeDescription;
+        private double RecipeRating = 0;
+
+
+        public void AddCmdDisplay()
+        {
+            int i = 0;
+            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Add a recipe");
+            for (i = 0; i < 120; i++) Console.Write("-");
+            Console.WriteLine("About:");
+            Console.WriteLine("- This command lets you add a new recipe with all its characteristics");
+            Console.WriteLine("- After you enter an ingredient and its count or grams, press Enter to enter new ingredient");
+            Console.WriteLine("- After you entered your ingredients enter 'end' as an ingredient to finish your input");
+            Console.WriteLine("- In the description you say how the meal is made");
+            Console.WriteLine("- In rating put a number between 1 and 10 including to rate the recipe");
+            Console.Write("\nName: ");
+            RecipeName = Console.ReadLine();
+            Console.WriteLine("\nIngredients:");
+            string ingredient="";
+            while(ingredient!="end")
+            {
+                ingredient = Console.ReadLine();
+                if (ingredient == "end") break;
+                ingredients.Add(ingredient);
+            }
+            Console.WriteLine("\nDescription:");
+            RecipeDescription = Console.ReadLine();
+            Console.WriteLine("\nRating: ");
+            RecipeRating = double.Parse(Console.ReadLine());
+        }
+
+
+        public string GetRecipeName()
+        {
+            //Console.WriteLine($"\nRecipeName={RecipeName}");*/              //Shows the name of the recipe
+            return RecipeName;
+        }
+        public List<string> GetIngredients()
+        {
+            //Console.WriteLine("\nList of ingredients:");
+            //for (int i = 0; i < ingredients.Count; i++)
+            //{                                                             //Shoes the names of the ingredients
+            //    Console.WriteLine($"{ingredients[i]}");
+            //}
+            return ingredients;
+        }
+        public string GetDescription()
+        {
+            return RecipeDescription;
+        }
+        public double GetRating()
+        {
+            return RecipeRating;
         }
     }
 }

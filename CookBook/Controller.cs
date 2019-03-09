@@ -15,11 +15,22 @@ namespace CookBook
 
         }
         
-        
         public void Start()
         {
             display.WelcomeScreen();
-            this.command=display.GetCommand();
+            command=display.GetCommand();
+            if(command=="add"){ Console.Clear(); Add();}
+            //TODO: command doesnt work after invalid output
+            //TODO: SQL queries
+        }
+
+        public void Add()
+        {
+            display.AddCmdDisplay();
+            display.GetRecipeName();
+            display.GetIngredients();
+            display.GetDescription();
+            display.GetRating();
         }
     }
 }

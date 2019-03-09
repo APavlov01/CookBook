@@ -5,3 +5,24 @@ D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyRefer
 D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
 D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.exe
 D:\VS projects\CookBook\CookBook\CookBook\obj\Debug\CookBook.pdb
+D:\Projects\Programs VS\CookBook\CookBook\bin\Debug\CookBook.exe.config
+D:\Projects\Programs VS\CookBook\CookBook\bin\Debug\CookBook.exe
+D:\Projects\Programs VS\CookBook\CookBook\bin\Debug\CookBook.pdb
+D:\Projects\Programs VS\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyReference.cache
+D:\Projects\Programs VS\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
+D:\Projects\Programs VS\CookBook\CookBook\obj\Debug\CookBook.exe
+D:\Projects\Programs VS\CookBook\CookBook\obj\Debug\CookBook.pdb
+E:\CookBook\CookBook\bin\Debug\CookBook.exe.config
+E:\CookBook\CookBook\bin\Debug\CookBook.exe
+E:\CookBook\CookBook\bin\Debug\CookBook.pdb
+E:\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyReference.cache
+E:\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
+E:\CookBook\CookBook\obj\Debug\CookBook.exe
+E:\CookBook\CookBook\obj\Debug\CookBook.pdb
+C:\Users\Alexander\Desktop\CookBook\CookBook\bin\Debug\CookBook.exe.config
+C:\Users\Alexander\Desktop\CookBook\CookBook\bin\Debug\CookBook.exe
+C:\Users\Alexander\Desktop\CookBook\CookBook\bin\Debug\CookBook.pdb
+C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyReference.cache
+C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
+C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.exe
+C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.pdb

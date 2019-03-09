@@ -27,7 +27,6 @@ namespace CookBook
             Console.WriteLine("- Add");
             Console.WriteLine("- Delete");
             Console.WriteLine("- Search");
-            Console.WriteLine("- New change");
         }
 
         public string GetCommand()

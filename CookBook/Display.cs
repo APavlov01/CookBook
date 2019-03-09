@@ -18,7 +18,7 @@ namespace CookBook
             for (int i = 0; i < 120; i++) Console.Write("-");
             for (int i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Welcome to CookBook!");
             for (int i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- With this program you can add, delete and search for recipes.");
             Console.WriteLine("- Each recipe contains of name, ingredients and description.");
             Console.WriteLine("- You can either search a recipe by an igredient it contains or by its name.");

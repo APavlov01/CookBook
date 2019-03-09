@@ -26,3 +26,10 @@ C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyRe
 C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
 C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.exe
 C:\Users\Alexander\Desktop\CookBook\CookBook\obj\Debug\CookBook.pdb
+D:\Projects\CookBookGit\CookBook\CookBook\bin\Debug\CookBook.exe.config
+D:\Projects\CookBookGit\CookBook\CookBook\bin\Debug\CookBook.exe
+D:\Projects\CookBookGit\CookBook\CookBook\bin\Debug\CookBook.pdb
+D:\Projects\CookBookGit\CookBook\CookBook\obj\Debug\CookBook.csprojAssemblyReference.cache
+D:\Projects\CookBookGit\CookBook\CookBook\obj\Debug\CookBook.csproj.CoreCompileInputs.cache
+D:\Projects\CookBookGit\CookBook\CookBook\obj\Debug\CookBook.exe
+D:\Projects\CookBookGit\CookBook\CookBook\obj\Debug\CookBook.pdb

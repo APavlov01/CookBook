@@ -16,5 +16,12 @@ namespace CookBook
         {
 
         }
+        public Ingredient(string name, double quantity, string type, double calories)
+        {
+            this.Calories = calories;
+            this.Name = name;
+            this.Quantity = quantity;
+            this.Type = type;
+        }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="Ingredient.cs" />
+    <Compile Include="Recipe.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

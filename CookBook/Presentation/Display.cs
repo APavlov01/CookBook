@@ -50,7 +50,7 @@ namespace CookBook
 
         private string RecipeName;
         private List<string> ingredients=new List<string>();
-        private string RecipeDescription;
+        private List<string> RecipeDescription= new List<string>();
         private double RecipeRating = 0;
 
 
@@ -70,14 +70,20 @@ namespace CookBook
             RecipeName = Console.ReadLine();
             Console.WriteLine("\nIngredients:");
             string ingredient="";
-            while(ingredient!="end")
+            while(ingredient.ToLower()!="end")
             {
                 ingredient = Console.ReadLine();
-                if (ingredient == "end") break;
+                if (ingredient.ToLower() == "end") break;
                 ingredients.Add(ingredient);
             }
             Console.WriteLine("\nDescription:");
-            RecipeDescription = Console.ReadLine();
+            string descriptionLine="";
+            while (descriptionLine.ToLower() != "end")
+            {
+                descriptionLine = Console.ReadLine();
+                if (descriptionLine.ToLower() == "end") break;
+                RecipeDescription.Add(ingredient);
+            }
             //Console.WriteLine("\nRating: ");
             //RecipeRating = double.Parse(Console.ReadLine());
         }
@@ -97,7 +103,7 @@ namespace CookBook
             //}
             return ingredients;
         }
-        public string GetDescription()
+        public List<string> GetDescription()
         {
             return RecipeDescription;
         }

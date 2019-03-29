@@ -30,7 +30,7 @@ namespace CookBook
             display.GetRecipeName();
             display.GetIngredients();
             display.GetDescription();
-            display.GetRating();
+            
         }
     }
 }

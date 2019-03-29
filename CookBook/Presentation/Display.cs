@@ -27,11 +27,12 @@ namespace CookBook
             Console.WriteLine("- Add");
             Console.WriteLine("- Delete");
             Console.WriteLine("- Search");
+            Console.WriteLine("- Rate");
         }
 
         public string GetCommand()
         {
-            string[] commands = { "add", "delete", "search", "exit" };
+            string[] commands = { "add", "delete", "search", "exit","rate" };
             Console.Write("\nChoose an option: ");
             var choice = Console.ReadLine().ToLower();
             while (!commands.Contains(choice))
@@ -53,6 +54,17 @@ namespace CookBook
         private List<string> RecipeDescription= new List<string>();
         private double RecipeRating = 0;
 
+
+
+        public void AddRatingDisplay()
+        {
+            Console.WriteLine("Add a rating to a recipe.\n -Name:");
+            RecipeName = Console.ReadLine();
+            
+
+            Console.WriteLine(" -Rating: ");
+            RecipeRating = double.Parse(Console.ReadLine());
+        }
 
         public void AddCmdDisplay()
         {
@@ -84,8 +96,7 @@ namespace CookBook
                 if (descriptionLine.ToLower() == "end") break;
                 RecipeDescription.Add(ingredient);
             }
-            //Console.WriteLine("\nRating: ");
-            //RecipeRating = double.Parse(Console.ReadLine());
+            
         }
 
 

@@ -20,6 +20,7 @@ namespace CookBook
             display.WelcomeScreen();
             command=display.GetCommand();
             if(command=="add"){ Console.Clear(); Add();}
+            else if (command == "rate") { Console.Clear();Rate(); }
             //TODO: command doesnt work after invalid output
             //TODO: SQL queries
         }
@@ -31,6 +32,10 @@ namespace CookBook
             display.GetIngredients();
             display.GetDescription();
             
+        }
+        public void Rate()
+        {
+            display.AddRatingDisplay();
         }
     }
 }

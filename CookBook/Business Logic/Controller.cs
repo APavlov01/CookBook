@@ -21,6 +21,8 @@ namespace CookBook
             command=display.GetCommand();
             if(command=="add"){ Console.Clear(); Add();}
             else if (command == "rate") { Console.Clear();Rate(); }
+            else if (command == "delete") { Console.Clear();Delete(); }
+            else if (command == "delete") { Console.Clear(); Search(); }
             //TODO: command doesnt work after invalid output
             //TODO: SQL queries
         }
@@ -35,7 +37,19 @@ namespace CookBook
         }
         public void Rate()
         {
-            display.AddRatingDisplay();
+            display.RatingCmdDisplay();
+            display.GetRecipeName();
+            display.GetRating();
+        }
+        public void Delete()
+        {
+            display.DeleteCmdDisplay();
+            display.GetRecipeName();
+        }
+        public void Search()
+        {
+            display.SearcheCmdDisplay();
+            display.GetRecipeName();
         }
     }
 }

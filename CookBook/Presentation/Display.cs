@@ -56,7 +56,7 @@ namespace CookBook
 
 
 
-        public void AddRatingDisplay()
+        public void RatingCmdDisplay()
         {
             Console.WriteLine("Add a rating to a recipe.\n -Name:");
             RecipeName = Console.ReadLine();
@@ -65,7 +65,16 @@ namespace CookBook
             Console.WriteLine(" -Rating: ");
             RecipeRating = double.Parse(Console.ReadLine());
         }
-
+        public void DeleteCmdDisplay()
+        {
+            Console.WriteLine("Enter a recipe name:");
+            RecipeName = Console.ReadLine();
+        }
+        public void SearcheCmdDisplay()
+        {
+            Console.WriteLine("Enter a recipe name:");
+            RecipeName = Console.ReadLine();
+        }
         public void AddCmdDisplay()
         {
             int i = 0;

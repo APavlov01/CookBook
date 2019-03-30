@@ -15,18 +15,16 @@ namespace CookBook
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
-        public double Quantity { get; set; }
         public string Type { get; set; }
         public double Calories { get; set; }
         public Ingredient()
         {
 
         }
-        public Ingredient(string name, double quantity, string type, double calories)
+        public Ingredient(string name, string type, double calories)
         {
             this.Calories = calories;
             this.Name = name;
-            this.Quantity = quantity;
             this.Type = type;
         }
     }

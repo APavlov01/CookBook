@@ -31,8 +31,6 @@ namespace CookBook.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<double>("Quantity");
-
                     b.Property<string>("Type");
 
                     b.HasKey("Id");

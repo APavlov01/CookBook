@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20190330223910_Inital")]
-    partial class Inital
+    [Migration("20190330231617_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,8 +32,6 @@ namespace CookBook.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<double>("Quantity");
 
                     b.Property<string>("Type");
 

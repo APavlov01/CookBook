@@ -9,7 +9,9 @@ namespace CookBook
     public class Controller
     {
         Display display = new Display();
+
         private string command;
+
         public Controller()
         {
 
@@ -29,12 +31,53 @@ namespace CookBook
 
         public void Add()
         {
+            string recipeName = null;
+
+            List<Ingredient> ingredients = new List<Ingredient>();
+
+            string ingredientArgs = null;
+
+            string description = null;
+
             display.AddCmdDisplay();
-            display.GetRecipeName();
-            display.GetIngredients();
-            display.GetDescription();
+            do
+            {
+                recipeName = display.GetRecipeName();
+                //TO DO display result -karatov
+
+            } while (ValidateRecipeName(recipeName));
+
+            do
+            {
+                ingredientArgs = display.GetIngredients();
+
+                if (ValidateIngredients(ingredientArgs))
+                {
+                    var ingredient = IngredientParsing(ingredientArgs);
+                    ingredients.Add(ingredient);
+                }
+
+            } while (!ingredientArgs.ToLower().Equals("end"));
+
+            do
+            {
+                description = display.GetDescription();
+
+            } while ();
             
         }
+
+        private bool ValidateIngredients(object ingredient)
+        {
+            //TO DO ingredient validation return true;
+            throw new NotImplementedException();
+        }
+
+        private bool ValidateRecipeName(string recipeName)
+        {
+            return string.IsNullOrEmpty(recipeName);
+        }
+
         public void Rate()
         {
             display.RatingCmdDisplay();
@@ -52,5 +95,10 @@ namespace CookBook
             display.GetRecipeName();
         }
 
+        private Ingredient IngredientParsing(string ingredientArguments)
+        {
+            //TO DO ingredient parsing
+            return null;
+        }
     }
 }

@@ -12,16 +12,16 @@ namespace CookBook
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public Ingredient MainIngredient { get; set; }
+        public string Ingredients { get; set; }
         public string Description { get; set; }
         public Recipe()
         {
 
         }
-        public Recipe(string name, Ingredient ingredient, string description)
+        public Recipe(string name, string ingredients, string description)
         {
             this.Name = name;
-            this.MainIngredient = ingredient;
+            this.Ingredients = ingredients;
             this.Description = description;
         }
     }

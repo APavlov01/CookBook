@@ -2,7 +2,7 @@ use CookBook;
 
 select * from Ingredients;
 
-/*insert into Ingredients (Name, Type, Calories) values ('tomato', 'g', '18');*/
+insert into Ingredients (Name, Type, Calories) values ('tomato', 'g', '18');
 insert into Ingredients (Name, Type, Calories) values ('butter', 'g', '717');
 insert into Ingredients (Name, Type, Calories) values ('cheddar', 'g', '404');
 insert into Ingredients (Name, Type, Calories) values ('mozarella', 'g', '300');
@@ -12,8 +12,8 @@ insert into Ingredients (Name, Type, Calories) values ('swiss', 'g', '393');
 insert into Ingredients (Name, Type, Calories) values ('american', 'g', '126');
 insert into Ingredients (Name, Type, Calories) values ('cream', 'g', '123');
 insert into Ingredients (Name, Type, Calories) values ('milk', 'g', '61');
-insert into Ingredients (Name, Type, Calories) values ('egg-whites', '', '52');
-insert into Ingredients (Name, Type, Calories) values ('egg-yolk', '', '322');
+insert into Ingredients (Name, Type, Calories) values ('egg-whites', 'cnt', '52');
+insert into Ingredients (Name, Type, Calories) values ('egg-yolk', 'cnt', '322');
 insert into Ingredients (Name, Type, Calories) values ('potato', 'g', '77');
 insert into Ingredients (Name, Type, Calories) values ('mayonnaise', 'g', '361');
 insert into Ingredients (Name, Type, Calories) values ('sunflower-oil', 'g', '884');

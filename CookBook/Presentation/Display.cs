@@ -103,13 +103,9 @@ namespace CookBook
 
             return description;
         }
-        public double GetRating()
+        public int GetRating()
         {
             return 0;
-        }
-        public string ReadIngredient()
-        {
-            return null;
         }
     }
 }

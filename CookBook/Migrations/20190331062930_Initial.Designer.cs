@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20190330142528_Initial")]
+    [Migration("20190331062930_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,13 +65,11 @@ namespace CookBook.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int?>("MainIngredientId");
+                    b.Property<string>("Ingredients");
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MainIngredientId");
 
                     b.ToTable("Recipes");
                 });
@@ -81,13 +79,6 @@ namespace CookBook.Migrations
                     b.HasOne("CookBook.Recipe", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId");
-                });
-
-            modelBuilder.Entity("CookBook.Recipe", b =>
-                {
-                    b.HasOne("CookBook.Ingredient", "MainIngredient")
-                        .WithMany()
-                        .HasForeignKey("MainIngredientId");
                 });
 #pragma warning restore 612, 618
         }

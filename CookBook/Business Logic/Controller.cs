@@ -45,7 +45,7 @@ namespace CookBook
                 recipeName = display.GetRecipeName();
                 //TO DO display result -karatov
 
-            } while (ValidateRecipeName(recipeName));
+            } while (!ValidateRecipeName(recipeName));
 
             do
             {
@@ -63,8 +63,13 @@ namespace CookBook
             {
                 description = display.GetDescription();
 
-            } while ();
+            } while (ValidateDescription(description));
             
+        }
+
+        private bool ValidateDescription(string description)
+        {
+            return !string.IsNullOrEmpty(description);
         }
 
         private bool ValidateIngredients(object ingredient)
@@ -75,7 +80,7 @@ namespace CookBook
 
         private bool ValidateRecipeName(string recipeName)
         {
-            return string.IsNullOrEmpty(recipeName);
+            return !string.IsNullOrEmpty(recipeName);
         }
 
         public void Rate()

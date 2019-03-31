@@ -29,18 +29,12 @@ namespace CookBook.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    MainIngredientId = table.Column<int>(nullable: true),
+                    Ingredients = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Recipes_Ingredients_MainIngredientId",
-                        column: x => x.MainIngredientId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,23 +61,18 @@ namespace CookBook.Migrations
                 name: "IX_Ratings_RecipeId",
                 table: "Ratings",
                 column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recipes_MainIngredientId",
-                table: "Recipes",
-                column: "MainIngredientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
                 name: "Ratings");
 
             migrationBuilder.DropTable(
                 name: "Recipes");
-
-            migrationBuilder.DropTable(
-                name: "Ingredients");
         }
     }
 }

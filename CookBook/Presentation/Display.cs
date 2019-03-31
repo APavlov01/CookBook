@@ -57,17 +57,20 @@ namespace CookBook
             Console.WriteLine(" -Rating: ");
            // RecipeRating = double.Parse(Console.ReadLine());
         }
+
         public string DeleteCmdDisplay()
         {
             Console.WriteLine("Enter a recipe name:");
             string recipeName = Console.ReadLine();
             return recipeName;
         }
+
         public void SearcheCmdDisplay()
         {
             Console.WriteLine("Enter a recipe name:");
             //RecipeName = Console.ReadLine();
         }
+
         public void AddCmdDisplay()
         {
             int i = 0;
@@ -86,26 +89,41 @@ namespace CookBook
         public string GetRecipeName()
         {
             Console.Write("\nName: ");
+
             string RecipeName = Console.ReadLine();
+
             return RecipeName;
         }
+
         public string GetIngredients()
         {
-            Console.WriteLine("Enter ingredient: ");
+            Console.Write("Enter ingredients: ");
+
             string ingredient = Console.ReadLine();
+
             return ingredient;
         }
+
         public string GetDescription()
         {
-            Console.WriteLine("Enter descreption: ");
+            Console.Write("Enter description: ");
 
             string description = Console.ReadLine();
 
             return description;
         }
+
         public int GetRating()
         {
             return 0;
+        }
+
+        public void PrintResult(string result)
+        {
+            if(!string.IsNullOrEmpty(result))
+            {
+                Console.WriteLine(result);
+            }
         }
     }
 }

@@ -14,8 +14,11 @@ namespace CookBook
         {
             Controller controller = new Controller();
             controller.Start();
-
-
+            //RecipeContext context = new RecipeContext();
+            //Rating rating = new Rating();
+            //rating.Id = 1;
+            //context.Ratings.Remove(rating);
+            //context.SaveChanges();
         }
     }
 }

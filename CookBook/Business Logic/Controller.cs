@@ -140,12 +140,13 @@ namespace CookBook
 
             display.PrintResult(result);
             ingredients = ingredientParse(ingredientsToParse);
-            return ingredientArgs;  //TO DO implement IngredientParsing() method 
+            return ingredients;  //TO DO implement IngredientParsing() method 
         }
 
         private string ingredientParse(List<string> ingredientArgs)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
             foreach (var ingredient in ingredientArgs)
             {
                 List<string> ingredientToParse = ingredient.Split().ToList();
@@ -159,7 +160,11 @@ namespace CookBook
                     }
                     sb.Append("-");
                 }
-                sb.Append("|" + ingredientToParse[argumentsCount]+ ";");
+                counter++;
+                sb.Append("|" + ingredientToParse[argumentsCount]);
+                if(ingredientArgs.Count-counter>0)
+                { sb.Append(";");
+                }
 
             }
             string ingredientParsed = sb.ToString();

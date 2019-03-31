@@ -1,0 +1,11 @@
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.deps.json
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.runtimeconfig.json
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.runtimeconfig.dev.json
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.dll
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.pdb
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.csprojAssemblyReference.cache
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfoInputs.cache
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfo.cs
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.dll
+C:\Users\Alex\Documents\GitHub\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.pdb

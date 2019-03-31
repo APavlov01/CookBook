@@ -41,6 +41,18 @@ namespace CookBook
             recipeName = recipeRead();
             ingredients = IngredientsRead();            
             description = DescriptionRead();
+
+
+            Recipe recipe = new Recipe();
+            recipe.Name = recipeName;
+            recipe.Ingredients = ingredients;
+            recipe.Description = description;
+
+            recipeContext.Recipes.Add(recipe);
+
+            recipeContext.SaveChanges();
+            Console.Clear();
+            Start();
         }
 
         private string recipeRead()
@@ -82,10 +94,11 @@ namespace CookBook
 
         private string IngredientsRead()
         {
-            string ingredientArgs = null;
+            string ingredientArgs = "";
             int validator = 0;
             bool continueReading = true;
-            string ingredients = null;
+            string ingredients = "";
+            List<string> ingredientsToParse = new List<string>();
 
             do
             {
@@ -98,6 +111,7 @@ namespace CookBook
                     if (validator == 1)
                     {
                         result = "Successfuly added ingredient!\n";
+                        ingredientsToParse.Add(ingredientArgs);
                         //var ingredient = IngredientParsing(ingredientArgs);
                         //ingredients.Add(ingredient);
                     }
@@ -117,6 +131,7 @@ namespace CookBook
                 else
                 {
                     continueReading = false;
+                    break;
                 }
 
             } while (continueReading);
@@ -124,8 +139,31 @@ namespace CookBook
             result = "Finished adding ingredients!\n";
 
             display.PrintResult(result);
+            ingredients = ingredientParse(ingredientsToParse);
+            return ingredientArgs;  //TO DO implement IngredientParsing() method 
+        }
 
-            return ingredients;  //TO DO implement IngredientParsing() method 
+        private string ingredientParse(List<string> ingredientArgs)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var ingredient in ingredientArgs)
+            {
+                List<string> ingredientToParse = ingredient.Split().ToList();
+                int argumentsCount = ingredientToParse.Count - 1;
+                for (int i = 0; i < argumentsCount; i++)
+                {
+                    sb.Append(ingredientToParse[i]);
+                    if (i==argumentsCount-1)
+                    {
+                        break;
+                    }
+                    sb.Append("-");
+                }
+                sb.Append("|" + ingredientToParse[argumentsCount]+ ";");
+
+            }
+            string ingredientParsed = sb.ToString();
+            return ingredientParsed;
         }
 
         //TO DO Add everything to database
@@ -156,8 +194,8 @@ namespace CookBook
 
             } while (validator != 1);
 
-            description = sb.ToString().Remove(description.Length - 2);
-
+            description = sb.ToString();
+            description=description.Remove(description.Length - 2);
             display.PrintResult(result);
 
             return description;
@@ -193,6 +231,14 @@ namespace CookBook
             {
                 return -1;
             }
+            try
+            {
+                double.Parse(ingredientArguments[argumentCount - 1]);
+                return -1;
+
+            }
+            catch { }
+            
             for (int i = 0; i < argumentCount; i++)
             {
                 sb.Append(ingredientArguments[i]); // eggs-yolk

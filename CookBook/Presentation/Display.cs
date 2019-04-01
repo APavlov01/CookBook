@@ -113,7 +113,7 @@ namespace CookBook
 
         public int GetRating()
         {
-            Console.Write("Enter rating between 0 and 5:");
+            Console.Write("Enter rating between 0 and 5: ");
             int rating = int.Parse(Console.ReadLine());
             return rating;
         }

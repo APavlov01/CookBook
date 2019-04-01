@@ -307,6 +307,7 @@ namespace CookBook
         {
             display.RatingCmdDisplay();
             addRating();
+            Console.Clear();
             Start();
             
             
@@ -315,8 +316,8 @@ namespace CookBook
         private void addRating()
         {
             string recipeName = null;
-            int validator = 0;
-            int rating= display.GetRating();
+            int validator = 1;
+            
             do
             {
                 recipeName = display.GetRecipeName().ToLower();
@@ -343,18 +344,55 @@ namespace CookBook
                 display.PrintResult(result);
 
             } while (ValidateRecipeName(recipeName) != 0);
-            while(rating<0||rating>5)
+            int rating = 0;
+            /*try
             {
+                rating = display.GetRating();
+            }
+            catch
+            {
+                Console.WriteLine("Rating must be an integer.");
+            }
+            while (rating<0||rating>5)
+            {
+                
                 result = "Enter a valid number!";
                 display.PrintResult(result);
                rating= display.GetRating();
-            }
+            }*/
+            do
+            {
+                
+                try
+                {
+                    rating = display.GetRating();
+                    if(rating<0||rating>5)
+                    {
+                        result = "Rating must be between 0 and 5!";
+                        validator = -1;
+                    }
+                    else
+                    {
+                        result = "Rating is valid.Adding to database.";
+                        validator = 1;
+                    }
+
+                }
+                catch 
+                {
+                    result = "Rating must be an integer!";
+                    validator = 0;
+                }
+                display.PrintResult(result);
+
+            } while (validator != 1);
 
            Recipe recipeToRate= recipeContext.Recipes.Single(x=>x.Name==recipeName);
             Rating ratingToAdd = new Rating();
             ratingToAdd.Score = rating;
             ratingToAdd.Recipe =recipeToRate;
             recipeContext.Ratings.Add(ratingToAdd);
+            recipeContext.SaveChanges();
             result = "Rating added to database!";
             display.PrintResult(result);
         }

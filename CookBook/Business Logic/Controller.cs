@@ -25,7 +25,7 @@ namespace CookBook
             if(command=="add"){ Console.Clear(); Add();}
             else if (command == "rate") { Console.Clear();Rate(); }
             else if (command == "delete") { Console.Clear();Delete(); }
-            else if (command == "delete") { Console.Clear(); Search(); }
+            else if (command == "search") { Console.Clear(); Search(); }
             //TODO: command doesnt work after invalid output
             //TODO: SQL queries
         }
@@ -299,11 +299,18 @@ namespace CookBook
             display.SearcheCmdDisplay();
             string name=display.GetRecipeName();
             result =searchQuerie(name);
+            Console.Clear();
+            
             display.PrintResult(result);
+            Console.ReadLine();
+            Console.Clear();
+            Start();
+            
         }
 
         private string searchQuerie(string name)
         {
+            string querie = null;
             if (ValidateRecipeName(name) == 1)
             {
                 result = "No such recipe in database!";
@@ -318,14 +325,28 @@ namespace CookBook
                 string description = null;
                 Recipe recipe = new Recipe();
                 recipe.Name = name;
-                recipe = recipeContext.Recipes.Find(recipe.Name = name);
+                foreach (Recipe check in recipeContext.Recipes)
+                {
+                    if(check.Name==recipe.Name)
+                    {
+                        recipe = check;
+                        break;
+                    }
+                }
                 ingredients = recipe.Ingredients;
                 description = recipe.Description;
                 StringBuilder sb = new StringBuilder();
                 sb.Append(recipe.Name + "\n");
                 ingredients = ingredientsToPlainText(ingredients);
+                sb.Append(ingredients+"\n");
+                description =recipe.Description;
+                sb.Append(description + "\n" + "Press ENTER to go to the main menu.");
+                querie = sb.ToString();
+               
+               
+
             }
-            throw new NotImplementedException();
+            return querie;
         }
         private string ingredientsToPlainText(string ingredients)
         {
@@ -333,12 +354,22 @@ namespace CookBook
             StringBuilder sb = new StringBuilder();
             foreach (var ingredient in allIngredients)
             {
-                List<string> ingredientAndQuantity = ingredient.Split("|");
-                sb.Append(inredientAndQuantity[0] + " " + ingredientAndQuantity[1]);
-                Ingredient ingredient = new Ingredient();
-                ingredient.Name = ingredientAndQuantity[0];
-                string type = recipeContext.Ingredients.Find(ingredient).Type;
+                List<string> ingredientAndQuantity = ingredient.Split("|").ToList();
+                sb.Append(ingredientAndQuantity[0] + " " + ingredientAndQuantity[1]+ " ");
+                Ingredient check = new Ingredient();
+                check.Name = ingredientAndQuantity[0];
+                string type = null;
+                foreach (Ingredient checkInDatabase in recipeContext.Ingredients)
+                {
+                    if(check.Name==checkInDatabase.Name)
+                    {
+                        type = checkInDatabase.Type;
+                    }
+                }
+                sb.Append(type + "\n");
             }
+            string ingredientsInPLainText = sb.ToString();
+            return ingredientsInPLainText;
         }
     }
 }

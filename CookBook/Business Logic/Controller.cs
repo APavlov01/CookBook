@@ -100,17 +100,28 @@ namespace CookBook
             string ingredients = "";
             List<string> ingredientsToParse = new List<string>();
 
+            int ingredientCount = 0;
+
             do
             {
+
                 ingredientArgs = display.GetIngredients();
 
-                if (!ingredientArgs.Equals("end"))
+                if (ingredientCount == 0 && ingredientArgs.ToLower().Equals("end"))
                 {
+                    result = "Please enter atleast one ingredient.";
+                    display.PrintResult(result);
+                }
+
+                else if (!ingredientArgs.Equals("end"))
+                {
+
                     validator = ValidateIngredients(ingredientArgs);
 
                     if (validator == 1)
                     {
                         result = "Successfuly added ingredient!\n";
+                        ingredientCount++;
                         ingredientsToParse.Add(ingredientArgs);
                         //var ingredient = IngredientParsing(ingredientArgs);
                         //ingredients.Add(ingredient);
@@ -171,10 +182,9 @@ namespace CookBook
             return ingredientParsed;
         }
 
-        //TO DO Add everything to database
-
         private string DescriptionRead()
         {
+            int paragraphCount = 1;
             int validator = 0;
             string description = null;
 
@@ -183,19 +193,21 @@ namespace CookBook
             {
                 string paragraph = display.GetDescription();
 
-                validator = ValidateDescription(paragraph);
+                validator = ValidateDescription(paragraph, paragraphCount);
                 
                 if (validator == 1)
                 {
                     result = "Successfully added description!";
                 }
-                else if (validator == -1)
+                else if (validator == -1 || validator == 0)
                 {
                     result = "Please enter a valid paragraph.";
+                    display.PrintResult(result);
                     continue;
                 }
 
                 sb.Append(paragraph + "\n");
+                paragraphCount++;
 
             } while (validator != 1);
 
@@ -206,17 +218,22 @@ namespace CookBook
             return description;
         }
 
-        private int ValidateDescription(string description)
+        private int ValidateDescription(string description, int paragraphCount)
         {
-            if (string.IsNullOrEmpty(description) || description.Equals("#"))
+            if (string.IsNullOrEmpty(description))
             {
                 return -1;
             }
-            if (description.EndsWith("#"))
+            else if (description.Equals("#") && paragraphCount == 1)
+            {
+                return 0;
+            }
+            else if (description.EndsWith("#"))
             {
                 return 1;
             }
-            return 0;
+
+            return 2;
         }
 
         private int ValidateIngredients(string ingredient)
@@ -232,10 +249,12 @@ namespace CookBook
             {
                 return -1;
             }
+
             if (double.Parse(ingredientArguments[argumentCount]) <= 0)
             {
                 return -1;
             }
+
             try
             {
                 double.Parse(ingredientArguments[argumentCount - 1]);
@@ -294,23 +313,9 @@ namespace CookBook
             display.DeleteCmdDisplay();
             display.GetRecipeName();
         }
+
         private void Search()
         {
-            display.SearcheCmdDisplay();
-            
-            result =searchQuerie();
-            Console.Clear();
-            
-            display.PrintResult(result);
-            Console.ReadLine();
-            Console.Clear();
-            Start();
-            
-        }
-
-        private string searchQuerie()
-        {
-            string querie = null;
             string name = null;
             bool continueInput = true;
             while (continueInput == true)
@@ -328,39 +333,40 @@ namespace CookBook
                 {
                     result = "Our turtles are searching in the database";
                     continueInput = false;
-                    break;
                 }
                 display.PrintResult(result);
             }
-            display.PrintResult(result);
-            
-                string ingredients = null;
-                string description = null;
-                Recipe recipe = new Recipe();
-                recipe.Name = name;
-                foreach (Recipe check in recipeContext.Recipes)
-                {
-                    if(check.Name.ToLower()==recipe.Name.ToLower())
-                    {
-                        recipe = check;
-                        break;
-                    }
-                }
-                ingredients = recipe.Ingredients;
-                description = recipe.Description;
-                StringBuilder sb = new StringBuilder();
-                sb.Append(recipe.Name + "\n");
-                ingredients = ingredientsToPlainText(ingredients);
-                sb.Append(ingredients+"\n");
-                description =recipe.Description;
-                sb.Append(description + "\n" + "Press ENTER to go to the main menu.");
-                querie = sb.ToString();
-               
-               
 
+            Console.Clear();
+
+            Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
+
+            result = recipeOutput(recipe);
+
+            display.PrintResult(result);
+            Console.ReadKey();
+            Console.Clear();
+            Start();
             
-            return querie;
         }
+
+        private string recipeOutput(Recipe recipe)
+        {
+            string ingredients = null;
+            string description = null;
+
+            ingredients = recipe.Ingredients;
+            description = recipe.Description;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(recipe.Name + "\n");
+            ingredients = ingredientsToPlainText(ingredients);
+            sb.Append(ingredients + "\n");
+            description = recipe.Description;
+            sb.Append(description + "\n" + "Press ENTER to go to the main menu.");
+
+            return sb.ToString();
+        }
+
         private string ingredientsToPlainText(string ingredients)
         {
             List<string> allIngredients = ingredients.Split(";").ToList();
@@ -384,6 +390,7 @@ namespace CookBook
                 sb.Append(type + "\n");
             }
             string ingredientsInPLainText = sb.ToString();
+
             return ingredientsInPLainText;
         }
     }

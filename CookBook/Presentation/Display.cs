@@ -65,10 +65,9 @@ namespace CookBook
             return recipeName;
         }
 
-        public void SearcheCmdDisplay()
+        public void SearchCmdDisplay()
         {
             Console.WriteLine("Enter a recipe name:");
-            //RecipeName = Console.ReadLine();
         }
 
         public void AddCmdDisplay()

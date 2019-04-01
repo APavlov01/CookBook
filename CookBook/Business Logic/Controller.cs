@@ -297,8 +297,48 @@ namespace CookBook
         private void Search()
         {
             display.SearcheCmdDisplay();
-            display.GetRecipeName();
+            string name=display.GetRecipeName();
+            result =searchQuerie(name);
+            display.PrintResult(result);
         }
-        
+
+        private string searchQuerie(string name)
+        {
+            if (ValidateRecipeName(name) == 1)
+            {
+                result = "No such recipe in database!";
+            }
+            else if (ValidateRecipeName(name) == -1)
+            {
+                result = "Name cannot be empty!";
+            }
+            else
+            {
+                string ingredients = null;
+                string description = null;
+                Recipe recipe = new Recipe();
+                recipe.Name = name;
+                recipe = recipeContext.Recipes.Find(recipe.Name = name);
+                ingredients = recipe.Ingredients;
+                description = recipe.Description;
+                StringBuilder sb = new StringBuilder();
+                sb.Append(recipe.Name + "\n");
+                ingredients = ingredientsToPlainText(ingredients);
+            }
+            throw new NotImplementedException();
+        }
+        private string ingredientsToPlainText(string ingredients)
+        {
+            List<string> allIngredients = ingredients.Split(";").ToList();
+            StringBuilder sb = new StringBuilder();
+            foreach (var ingredient in allIngredients)
+            {
+                List<string> ingredientAndQuantity = ingredient.Split("|");
+                sb.Append(inredientAndQuantity[0] + " " + ingredientAndQuantity[1]);
+                Ingredient ingredient = new Ingredient();
+                ingredient.Name = ingredientAndQuantity[0];
+                string type = recipeContext.Ingredients.Find(ingredient).Type;
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace CookBook
         private RecipeContext recipeContext = new RecipeContext();
         private string command;
         private string result;
-
+        private double caloriesPerRecipe = 0;
         public Controller()
         {
 
@@ -52,6 +52,7 @@ namespace CookBook
 
             recipeContext.SaveChanges();
             Console.Clear();
+            
             Start();
         }
 
@@ -62,7 +63,8 @@ namespace CookBook
 
             do
             {
-                recipeName = display.GetRecipeName();
+                recipeName = display.GetRecipeName().ToLower();
+                recipeName= recipeName.First().ToString().ToUpper()+ recipeName.Substring(1);
 
                 validator = ValidateRecipeName(recipeName);
 
@@ -113,7 +115,7 @@ namespace CookBook
                     display.PrintResult(result);
                 }
 
-                else if (!ingredientArgs.Equals("end"))
+                else if (!ingredientArgs.ToLower().Equals("end"))
                 {
 
                     validator = ValidateIngredients(ingredientArgs);
@@ -241,20 +243,6 @@ namespace CookBook
             List<string> ingredientArguments = ingredient.Split().ToList();
             StringBuilder sb = new StringBuilder();
             int argumentCount = ingredientArguments.Count - 1;
-            try
-            {
-                double.Parse(ingredientArguments[argumentCount]);
-            }
-            catch
-            {
-                return -1;
-            }
-
-            if (double.Parse(ingredientArguments[argumentCount]) <= 0)
-            {
-                return -1;
-            }
-            
             for (int i = 0; i < argumentCount; i++)
             {
                 sb.Append(ingredientArguments[i]); // eggs-yolk
@@ -273,18 +261,26 @@ namespace CookBook
             {
                 return 0;
             }
+            try
+            {
+                double.Parse(ingredientArguments[argumentCount]);
+            }
+            catch
+            {
+                return -1;
+            }
+
+            if (double.Parse(ingredientArguments[argumentCount]) <= 0)
+            {
+                return -1;
+            }
+            
+            
             return 1;
         }
 
         private int ValidateRecipeName(string recipeName)
         {
-            //foreach(Recipe recipe in recipeContext.Recipes)
-            //{
-            //  if (recipe.Name.ToLower()==recipeName.ToLower())
-            //{
-            //  return 0;
-            //}
-            //}
             if (string.IsNullOrEmpty(recipeName))
             {
                 return -1;
@@ -345,21 +341,6 @@ namespace CookBook
 
             } while (ValidateRecipeName(recipeName) != 0);
             int rating = 0;
-            /*try
-            {
-                rating = display.GetRating();
-            }
-            catch
-            {
-                Console.WriteLine("Rating must be an integer.");
-            }
-            while (rating<0||rating>5)
-            {
-                
-                result = "Enter a valid number!";
-                display.PrintResult(result);
-               rating= display.GetRating();
-            }*/
             do
             {
                 
@@ -479,6 +460,7 @@ namespace CookBook
             display.PrintResult(result);
             Console.ReadKey();
             Console.Clear();
+            caloriesPerRecipe = 0;
             Start();
             
         }
@@ -491,11 +473,25 @@ namespace CookBook
             ingredients = recipe.Ingredients;
             description = recipe.Description;
             StringBuilder sb = new StringBuilder();
-            sb.Append("\nName: "+ recipe.Name + "\n" + "\nIngredients:\n");
+            double rating = 0;
+            int ratingsCounter = 0;
+            foreach ( Rating ratingInDB in recipeContext.Ratings)
+            {
+                if(ratingInDB.Recipe==recipe)
+                {
+                    rating += ratingInDB.Score;
+                    ratingsCounter++;
+                }
+                
+            }
+            rating /= ratingsCounter;
+            sb.Append("\nName: "+ recipe.Name + $"  Rating: {rating:F2}" +"\n" + "\nIngredients:\n");
             ingredients = IngredientsToPlainText(ingredients);
             sb.Append(ingredients + "\n");
             description = recipe.Description;
-            sb.Append("Description:\n" + description + "\n\n" + "Press ENTER to go to the main menu.");
+            
+            sb.Append("Description:\n" + description +$"\n\n- The calories for this recipe are: {caloriesPerRecipe:F2}" + "\n\n" + "Press ENTER to go to the main menu.");
+
 
             return sb.ToString();
         }
@@ -516,11 +512,15 @@ namespace CookBook
                     if(check.Name==checkInDatabase.Name)
                     {
                         check = checkInDatabase;
+                        caloriesPerRecipe += (check.Calories * double.Parse(ingredientAndQuantity[1])) / 100;
                         break;
+                        
                     }
+                    
                 }
                 type = check.Type;
                 sb.Append(type + "\n");
+                
             }
             string ingredientsInPLainText = sb.ToString();
 

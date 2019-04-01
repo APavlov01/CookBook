@@ -26,8 +26,6 @@ namespace CookBook
             else if (command == "rate") { Console.Clear();Rate(); }
             else if (command == "delete") { Console.Clear();Delete(); }
             else if (command == "search") { Console.Clear(); Search(); }
-            //TODO: command doesnt work after invalid output
-            //TODO: SQL queries
         }
 
         private void Add()
@@ -38,15 +36,17 @@ namespace CookBook
             
 
             display.AddCmdDisplay();
-            recipeName = recipeRead();
+            recipeName = RecipeRead();
             ingredients = IngredientsRead();            
             description = DescriptionRead();
 
 
-            Recipe recipe = new Recipe();
-            recipe.Name = recipeName;
-            recipe.Ingredients = ingredients;
-            recipe.Description = description;
+            Recipe recipe = new Recipe
+            {
+                Name = recipeName,
+                Ingredients = ingredients,
+                Description = description
+            };
 
             recipeContext.Recipes.Add(recipe);
 
@@ -55,7 +55,7 @@ namespace CookBook
             Start();
         }
 
-        private string recipeRead()
+        private string RecipeRead()
         {
             string recipeName = null;
             int validator = 0;
@@ -150,11 +150,11 @@ namespace CookBook
             result = "Finished adding ingredients!\n";
 
             display.PrintResult(result);
-            ingredients = ingredientParse(ingredientsToParse);
+            ingredients = IngredientParse(ingredientsToParse);
             return ingredients;  //TO DO implement IngredientParsing() method 
         }
 
-        private string ingredientParse(List<string> ingredientArgs)
+        private string IngredientParse(List<string> ingredientArgs)
         {
             StringBuilder sb = new StringBuilder();
             int counter = 0;
@@ -254,14 +254,6 @@ namespace CookBook
             {
                 return -1;
             }
-
-            try
-            {
-                double.Parse(ingredientArguments[argumentCount - 1]);
-                return -1;
-
-            }
-            catch { }
             
             for (int i = 0; i < argumentCount; i++)
             {
@@ -281,8 +273,6 @@ namespace CookBook
             {
                 return 0;
             }
-            //TO DO ingredient validation return true; =====> DONE
-            //TO DO if consists in database =====> DONE
             return 1;
         }
 
@@ -307,11 +297,55 @@ namespace CookBook
             display.RatingCmdDisplay();
             display.GetRecipeName();
             display.GetRating();
-        }
+        }  // TO DO Rate function
         private void Delete()
         {
             display.DeleteCmdDisplay();
-            display.GetRecipeName();
+
+            string recipeName = null;
+
+            int validator = 0;
+
+            Recipe recipe = new Recipe();
+
+            StringBuilder sb = new StringBuilder();
+
+            do
+            {
+                recipeName = display.GetRecipeName().ToLower();
+
+                validator = ValidateRecipeName(recipeName);
+
+                if (validator == 0)
+                {
+                    result = "Successfully deleted recipe!";
+                    break;
+                }
+
+                if (validator == -1)
+                {
+                    result = "Name cannot be empty!";
+                }
+
+                else if (validator == 1)
+                {
+                    result = "Such recipe doesn't exist!";
+                }
+
+                display.PrintResult(result);
+
+            } while (ValidateRecipeName(recipeName) != 0);
+
+            recipe.Name = recipeName;
+            recipeContext.Remove(recipeContext.Recipes.Single(x => x.Name == recipe.Name));
+            recipeContext.SaveChanges();
+
+            sb.Append(result + "\n" + "Press ENTER to go to the main menu");
+            display.PrintResult(sb.ToString());
+
+            Console.ReadKey();
+            Console.Clear();
+            Start();
         }
 
         private void Search()
@@ -341,7 +375,7 @@ namespace CookBook
 
             Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
 
-            result = recipeOutput(recipe);
+            result = RecipeOutput(recipe);
 
             display.PrintResult(result);
             Console.ReadKey();
@@ -350,7 +384,7 @@ namespace CookBook
             
         }
 
-        private string recipeOutput(Recipe recipe)
+        private string RecipeOutput(Recipe recipe)
         {
             string ingredients = null;
             string description = null;
@@ -358,23 +392,23 @@ namespace CookBook
             ingredients = recipe.Ingredients;
             description = recipe.Description;
             StringBuilder sb = new StringBuilder();
-            sb.Append(recipe.Name + "\n");
-            ingredients = ingredientsToPlainText(ingredients);
+            sb.Append("\nName: "+ recipe.Name + "\n" + "\nIngredients:\n");
+            ingredients = IngredientsToPlainText(ingredients);
             sb.Append(ingredients + "\n");
             description = recipe.Description;
-            sb.Append(description + "\n" + "Press ENTER to go to the main menu.");
+            sb.Append("Description:\n" + description + "\n\n" + "Press ENTER to go to the main menu.");
 
             return sb.ToString();
         }
 
-        private string ingredientsToPlainText(string ingredients)
+        private string IngredientsToPlainText(string ingredients)
         {
             List<string> allIngredients = ingredients.Split(";").ToList();
             StringBuilder sb = new StringBuilder();
             foreach (var ingredient in allIngredients)
             {
                 List<string> ingredientAndQuantity = ingredient.Split("|").ToList();
-                sb.Append(ingredientAndQuantity[0] + " " + ingredientAndQuantity[1]+ " ");
+                sb.Append("- " + ingredientAndQuantity[0] + " " + ingredientAndQuantity[1] + " ");
                 Ingredient check = new Ingredient();
                             check.Name = ingredientAndQuantity[0];
                 string type = null;

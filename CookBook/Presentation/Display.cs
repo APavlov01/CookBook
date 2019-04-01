@@ -28,6 +28,7 @@ namespace CookBook
             Console.WriteLine("- Delete");
             Console.WriteLine("- Search");
             Console.WriteLine("- Rate");
+            Console.WriteLine("- Exit");
         }
 
         public string GetCommand()
@@ -58,11 +59,9 @@ namespace CookBook
            // RecipeRating = double.Parse(Console.ReadLine());
         }
 
-        public string DeleteCmdDisplay()
+        public void DeleteCmdDisplay()
         {
-            Console.WriteLine("Enter a recipe name:");
-            string recipeName = Console.ReadLine();
-            return recipeName;
+            Console.WriteLine("Enter the recipe name you want to delete below!");
         }
 
         public void SearchCmdDisplay()

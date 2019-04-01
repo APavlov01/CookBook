@@ -278,26 +278,87 @@ namespace CookBook
 
         private int ValidateRecipeName(string recipeName)
         {
-            foreach(Recipe recipe in recipeContext.Recipes)
-            {
-                if (recipe.Name.ToLower()==recipeName.ToLower())
-                {
-                    return 0;
-                }
-            }
-            if(string.IsNullOrEmpty(recipeName))
+            //foreach(Recipe recipe in recipeContext.Recipes)
+            //{
+            //  if (recipe.Name.ToLower()==recipeName.ToLower())
+            //{
+            //  return 0;
+            //}
+            //}
+            if (string.IsNullOrEmpty(recipeName))
             {
                 return -1;
             }
-            else return 1;
+            try
+            {
+                recipeContext.Recipes.Single(x => x.Name == recipeName);
+                return 0;
+            }
+            catch
+            {
+                return 1;
+            }
+            
+            
+            
         }
 
         private void Rate()
         {
             display.RatingCmdDisplay();
-            display.GetRecipeName();
-            display.GetRating();
+            addRating();
+            Start();
+            
+            
         }  // TO DO Rate function
+
+        private void addRating()
+        {
+            string recipeName = null;
+            int validator = 0;
+            int rating= display.GetRating();
+            do
+            {
+                recipeName = display.GetRecipeName().ToLower();
+
+                validator = ValidateRecipeName(recipeName);
+
+                if (validator == 0)
+                {
+                    result = "Successfully deleted recipe!";
+                    break;
+                }
+
+                if (validator == -1)
+                {
+                    result = "Name cannot be empty!";
+                }
+
+                else if (validator == 1)
+                {
+                    result = "Such recipe doesn't exist!";
+                }
+                
+               
+                display.PrintResult(result);
+
+            } while (ValidateRecipeName(recipeName) != 0);
+            while(rating<0||rating>5)
+            {
+                result = "Enter a valid number!";
+                display.PrintResult(result);
+               rating= display.GetRating();
+            }
+
+           Recipe recipeToRate= recipeContext.Recipes.Single(x=>x.Name==recipeName);
+            Rating ratingToAdd = new Rating();
+            ratingToAdd.Score = rating;
+            ratingToAdd.Recipe =recipeToRate;
+            recipeContext.Ratings.Add(ratingToAdd);
+            result = "Rating added to database!";
+            display.PrintResult(result);
+        }
+
         private void Delete()
         {
             display.DeleteCmdDisplay();

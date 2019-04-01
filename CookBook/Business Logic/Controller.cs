@@ -167,7 +167,7 @@ namespace CookBook
                 }
 
             }
-            string ingredientParsed = sb.ToString();
+            string ingredientParsed = sb.ToString().ToLower();
             return ingredientParsed;
         }
 
@@ -256,7 +256,7 @@ namespace CookBook
             var check = recipeContext.Ingredients.ToList();
             try
             {
-                check.Single(x => x.Name == sb.ToString());
+                check.Single(x => x.Name.ToLower() == sb.ToString().ToLower());
             }
             catch
             {
@@ -271,7 +271,7 @@ namespace CookBook
         {
             foreach(Recipe recipe in recipeContext.Recipes)
             {
-                if (recipe.Name==recipeName)
+                if (recipe.Name.ToLower()==recipeName.ToLower())
                 {
                     return 0;
                 }
@@ -297,8 +297,8 @@ namespace CookBook
         private void Search()
         {
             display.SearcheCmdDisplay();
-            string name=display.GetRecipeName();
-            result =searchQuerie(name);
+            
+            result =searchQuerie();
             Console.Clear();
             
             display.PrintResult(result);
@@ -308,26 +308,39 @@ namespace CookBook
             
         }
 
-        private string searchQuerie(string name)
+        private string searchQuerie()
         {
             string querie = null;
-            if (ValidateRecipeName(name) == 1)
+            string name = null;
+            bool continueInput = true;
+            while (continueInput == true)
             {
-                result = "No such recipe in database!";
+                name = display.GetRecipeName();
+                if (ValidateRecipeName(name) == 1)
+                {
+                    result = "No such recipe in database!";
+                }
+                else if (ValidateRecipeName(name) == -1)
+                {
+                    result = "Name cannot be empty!";
+                }
+                else if (ValidateRecipeName(name) == 0)
+                {
+                    result = "Our turtles are searching in the database";
+                    continueInput = false;
+                    break;
+                }
+                display.PrintResult(result);
             }
-            else if (ValidateRecipeName(name) == -1)
-            {
-                result = "Name cannot be empty!";
-            }
-            else
-            {
+            display.PrintResult(result);
+            
                 string ingredients = null;
                 string description = null;
                 Recipe recipe = new Recipe();
                 recipe.Name = name;
                 foreach (Recipe check in recipeContext.Recipes)
                 {
-                    if(check.Name==recipe.Name)
+                    if(check.Name.ToLower()==recipe.Name.ToLower())
                     {
                         recipe = check;
                         break;
@@ -345,7 +358,7 @@ namespace CookBook
                
                
 
-            }
+            
             return querie;
         }
         private string ingredientsToPlainText(string ingredients)
@@ -357,15 +370,17 @@ namespace CookBook
                 List<string> ingredientAndQuantity = ingredient.Split("|").ToList();
                 sb.Append(ingredientAndQuantity[0] + " " + ingredientAndQuantity[1]+ " ");
                 Ingredient check = new Ingredient();
-                check.Name = ingredientAndQuantity[0];
+                            check.Name = ingredientAndQuantity[0];
                 string type = null;
                 foreach (Ingredient checkInDatabase in recipeContext.Ingredients)
                 {
                     if(check.Name==checkInDatabase.Name)
                     {
-                        type = checkInDatabase.Type;
+                        check = checkInDatabase;
+                        break;
                     }
                 }
+                type = check.Type;
                 sb.Append(type + "\n");
             }
             string ingredientsInPLainText = sb.ToString();

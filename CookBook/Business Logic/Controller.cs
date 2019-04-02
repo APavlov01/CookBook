@@ -26,8 +26,8 @@ namespace CookBook
             else if (command == "rate") { Console.Clear();Rate(); }
             else if (command == "delete") { Console.Clear();Delete(); }
             else if (command == "search") { Console.Clear(); Search(); }
+            else if (command == "update") { Console.Clear(); Update(); }
         }
-
         private void Add()
         {
             string recipeName = null;
@@ -51,8 +51,9 @@ namespace CookBook
             recipeContext.Recipes.Add(recipe);
 
             recipeContext.SaveChanges();
+            display.PrintResult("\nPress ENTER to go to the main menu");
+            Console.ReadKey();
             Console.Clear();
-            
             Start();
         }
 
@@ -302,14 +303,14 @@ namespace CookBook
         private void Rate()
         {
             display.RatingCmdDisplay();
-            addRating();
+            AddRating();
+            display.PrintResult("\nPress ENTER to go to the main menu");
+            Console.ReadKey();
             Console.Clear();
             Start();
-            
-            
-        }  // TO DO Rate function
+        }
 
-        private void addRating()
+        private void AddRating()
         {
             string recipeName = null;
             int validator = 1;
@@ -322,7 +323,7 @@ namespace CookBook
 
                 if (validator == 0)
                 {
-                    result = "Successfully deleted recipe!";
+                    result = "Successfully found recipe!";
                     break;
                 }
 
@@ -368,7 +369,7 @@ namespace CookBook
 
             } while (validator != 1);
 
-           Recipe recipeToRate= recipeContext.Recipes.Single(x=>x.Name==recipeName);
+            Recipe recipeToRate= recipeContext.Recipes.Single(x=>x.Name==recipeName);
             Rating ratingToAdd = new Rating();
             ratingToAdd.Score = rating;
             ratingToAdd.Recipe =recipeToRate;
@@ -430,6 +431,7 @@ namespace CookBook
 
         private void Search()
         {
+            display.SearchCmdDisplay();
             string name = null;
             bool continueInput = true;
             while (continueInput == true)
@@ -456,13 +458,93 @@ namespace CookBook
             Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
 
             result = RecipeOutput(recipe);
-
+            caloriesPerRecipe = 0;
             display.PrintResult(result);
+            display.PrintResult("\nPress ENTER to go to the main menu");
             Console.ReadKey();
             Console.Clear();
-            caloriesPerRecipe = 0;
             Start();
+
+        }
+
+        private void Update()
+        {
+            display.UpdateCmdDisplay();
+            string recipeName = null;
+            string[] options = {"ingredients", "name", "description"};
+            string choice = null;
+            int validator = 0;
+            do
+            {
+                recipeName = display.GetRecipeName().ToLower();
+
+                validator = ValidateRecipeName(recipeName);
+
+                if (validator == 0)
+                {
+                    result = "Successfully found recipe!";
+                }
+
+                if (validator == -1)
+                {
+                    result = "Name cannot be empty!";
+                }
+
+                else if (validator == 1)
+                {
+                    result = "Such recipe doesn't exist!";
+                }
+
+                display.PrintResult(result);
+
+            } while (validator != 0);//Validation
+
+            Recipe recipe = recipeContext.Recipes.Single(x => x.Name == recipeName); // Gets the whole recipe from database
+            display.PrintResult(RecipeOutput(recipe)); //Shows what the recipe contains
+            display.PrintResult("\nWhat do you want to update?"); //Asking what to update
             
+            do
+            {
+                choice = Console.ReadLine();
+                if(options.Contains(choice.ToLower()))
+                {
+                    break;
+                }
+                display.PrintResult("Invalid input!");
+            } while (!options.Contains(choice.ToLower())); //Validates if the input is either ingredients, name or description
+
+            string NewRecipeName = null;
+            string ingredients = null;
+            string description = null;
+            if(choice.ToLower() == "ingredients") // Updates ingredients if the choice is "ingredients"
+            {
+                display.PrintResult("Enter new ingredients:");
+                ingredients = IngredientsRead();
+                recipe.Ingredients = ingredients;
+                recipeContext.Recipes.Update(recipe);
+                recipeContext.SaveChanges();
+            }
+            if (choice.ToLower() == "name") // Updates ingredients if the choice is "name"
+            {
+                display.PrintResult("Enter new name:");
+                NewRecipeName=RecipeRead();
+                recipe.Name = NewRecipeName;
+                recipeContext.Recipes.Update(recipe);
+                recipeContext.SaveChanges();
+            }
+            if (choice.ToLower() == "description")
+            {
+                display.PrintResult("Enter new description:"); // Updates ingredients if the choice is "description"
+                description = DescriptionRead();
+                recipe.Description = description;
+                recipeContext.Recipes.Update(recipe);
+                recipeContext.SaveChanges();
+            }
+            display.PrintResult("\nPress ENTER to go to the main menu"); //Returns to main menu
+            Console.ReadKey();
+            Console.Clear();
+            Start();
+
         }
 
         private string RecipeOutput(Recipe recipe)
@@ -490,7 +572,7 @@ namespace CookBook
             sb.Append(ingredients + "\n");
             description = recipe.Description;
             
-            sb.Append("Description:\n" + description +$"\n\n- The calories for this recipe are: {caloriesPerRecipe:F2}" + "\n\n" + "Press ENTER to go to the main menu.");
+            sb.Append("Description:\n" + description +$"\n\nCalories for this recipe are: {caloriesPerRecipe:F2}");
 
 
             return sb.ToString();

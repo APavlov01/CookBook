@@ -52,6 +52,8 @@ namespace CookBook
 
         public void RatingCmdDisplay()
         {
+            Console.Clear();
+
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Rate a recipe");
@@ -64,6 +66,8 @@ namespace CookBook
 
         public void DeleteCmdDisplay()
         {
+            Console.Clear();
+
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Delete a recipe");
@@ -75,6 +79,8 @@ namespace CookBook
 
         public void SearchCmdDisplay()
         {
+            Console.Clear();
+
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Search for a recipe");
@@ -86,6 +92,8 @@ namespace CookBook
 
         public void UpdateCmdDisplay()
         {
+            Console.Clear();
+
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Update a recipe");
@@ -99,6 +107,7 @@ namespace CookBook
 
         public void AddCmdDisplay()
         {
+            Console.Clear();
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Add a recipe");
@@ -151,6 +160,19 @@ namespace CookBook
             {
                 Console.WriteLine(result);
             }
+        }
+
+        public void ReturnToMainMenuScreen()
+        {
+            Console.WriteLine("Press any key to return to the main menu.");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        internal string UpdateIngredientsScreen() {
+            Console.WriteLine("Do you want to add a new ingredient or to edit/remove an existing one.");
+            string input = Console.ReadLine();
+            return input;
         }
     }
 }

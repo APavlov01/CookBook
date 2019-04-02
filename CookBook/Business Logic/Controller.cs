@@ -56,7 +56,7 @@ namespace CookBook
             Console.Clear();
             Start();
         }
-
+        //Add function bug: Pressing enter on name without inputting anything =====> See RecipeRead() ====>fixed
         private string RecipeRead()
         {
             string recipeName = null;
@@ -65,7 +65,10 @@ namespace CookBook
             do
             {
                 recipeName = display.GetRecipeName().ToLower();
-                recipeName= recipeName.First().ToString().ToUpper()+ recipeName.Substring(1);
+                if (ValidateRecipeName(recipeName) != -1)
+                {
+                    recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1); // That caused the problem
+                }
 
                 validator = ValidateRecipeName(recipeName);
 
@@ -86,7 +89,6 @@ namespace CookBook
                 }
 
                 display.PrintResult(result);
-                //TO DO display result -karatov =====> DONE
 
             } while (ValidateRecipeName(recipeName) != 1);
 
@@ -295,11 +297,8 @@ namespace CookBook
             {
                 return 1;
             }
-            
-            
-            
         }
-
+        
         private void Rate()
         {
             display.RatingCmdDisplay();
@@ -518,7 +517,6 @@ namespace CookBook
             string description = null;
             if(choice.ToLower() == "ingredients") // Updates ingredients if the choice is "ingredients"
             {
-                display.PrintResult("Enter new ingredients:");
                 ingredients = IngredientsRead();
                 recipe.Ingredients = ingredients;
                 recipeContext.Recipes.Update(recipe);
@@ -526,15 +524,13 @@ namespace CookBook
             }
             if (choice.ToLower() == "name") // Updates ingredients if the choice is "name"
             {
-                display.PrintResult("Enter new name:");
                 NewRecipeName=RecipeRead();
                 recipe.Name = NewRecipeName;
                 recipeContext.Recipes.Update(recipe);
                 recipeContext.SaveChanges();
             }
-            if (choice.ToLower() == "description")
+            if (choice.ToLower() == "description")// Updates ingredients if the choice is "description"
             {
-                display.PrintResult("Enter new description:"); // Updates ingredients if the choice is "description"
                 description = DescriptionRead();
                 recipe.Description = description;
                 recipeContext.Recipes.Update(recipe);

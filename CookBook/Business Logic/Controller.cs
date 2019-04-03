@@ -45,26 +45,27 @@ namespace CookBook {
             string recipeName = null;
             string ingredients = null;
             string description = null;
+            double callories = 0;
 
 
             display.AddCmdDisplay();
             recipeName = RecipeRead();
             ingredients = IngredientsRead();
             description = DescriptionRead();
+            callories = CalculateCalories(ingredients);
 
 
             Recipe recipe = new Recipe {
                 Name = recipeName,
                 Ingredients = ingredients,
-                Description = description
+                Description = description,
+                Calories = callories
             };
 
             recipeContext.Recipes.Add(recipe);
 
             recipeContext.SaveChanges();
-            display.PrintResult("\nPress ENTER to go to the main menu");
-            Console.ReadKey();
-            Console.Clear();
+            display.ReturnToMainMenuScreen();
             Start();
         }
         //Add function bug: Pressing enter on name without inputting anything =====> See RecipeRead() ====>fixed
@@ -525,6 +526,7 @@ namespace CookBook {
                 sb.Append(";");
             }
             recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
+            recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
             
@@ -555,6 +557,7 @@ namespace CookBook {
             }
 
             recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
+            recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
         }
@@ -564,6 +567,7 @@ namespace CookBook {
             StringBuilder sb = new StringBuilder();
             sb.Append(recipe.Ingredients + ";" + ingredients);
             recipe.Ingredients = sb.ToString();
+            recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
 
@@ -579,7 +583,6 @@ namespace CookBook {
         private string RecipeOutput(Recipe recipe) {
             string ingredients = null;
             string description = null;
-            double caloriesPerRecipe = 0;
 
             ingredients = recipe.Ingredients;
             description = recipe.Description;
@@ -595,14 +598,13 @@ namespace CookBook {
             }
             rating /= ratingsCounter;
             sb.Append("\nName: " + recipe.Name + $"  Rating: {rating:F2}" + "\n" + "\nIngredients:\n");
-            caloriesPerRecipe = CalculateCalories(ingredients);
             ingredients = IngredientsToPlainText(ingredients);
             sb.Append(ingredients + "\n");
             description = recipe.Description;
 
 
 
-            sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {caloriesPerRecipe:F2}");
+            sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {recipe.Calories:F2}");
 
             return sb.ToString();
         }

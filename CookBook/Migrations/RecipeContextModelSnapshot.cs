@@ -61,6 +61,8 @@ namespace CookBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("Calories");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Ingredients");

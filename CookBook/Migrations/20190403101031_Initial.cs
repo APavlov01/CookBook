@@ -14,7 +14,7 @@ namespace CookBook.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Type = table.Column<string>(maxLength: 10, nullable: false),
+                    Type = table.Column<string>(nullable: true),
                     Calories = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
@@ -28,9 +28,10 @@ namespace CookBook.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Ingredients = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    Ingredients = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Calories = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +45,7 @@ namespace CookBook.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Score = table.Column<double>(nullable: false),
-                    RecipeId = table.Column<int>(nullable: false)
+                    RecipeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

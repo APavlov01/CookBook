@@ -384,16 +384,17 @@ namespace CookBook {
             display.SearchCmdDisplay();
             string name = null;
             bool continueInput = true;
+            int validator = 0;
 
             while (continueInput == true) {
                 name = display.GetRecipeName();
-                if (ValidateRecipeName(name) == 1) {
+                if (validator == 1) {
                     result = "No such recipe in database!";
                 }
-                else if (ValidateRecipeName(name) == -1) {
+                else if (validator == -1) {
                     result = "Name cannot be empty!";
                 }
-                else if (ValidateRecipeName(name) == 0) {
+                else if (validator == 0) {
                     result = "Our turtles are searching in the database";
                     continueInput = false;
                 }
@@ -604,18 +605,13 @@ namespace CookBook {
 
         public double CalculateRating(Recipe recipe) {
             double rating = 0;
-            int ratingsCounter = 0;
-            foreach (Rating ratingInDB in recipeContext.Ratings) {
-                if (ratingInDB.Recipe == recipe) {
-                    rating += ratingInDB.Score;
-                    ratingsCounter++;
-                }
 
-            }
-            rating /= ratingsCounter;
-
+            var ratings = recipeContext.Ratings.Where(x => x.Recipe.Name == recipe.Name).ToArray();
+            rating = ratings.Sum(x => x.Score);
+            rating /= ratings.Length;
+            
             return rating;
-        } //Gonotest
+        } //Tested
 
         public double CalculateCalories(string ingredients) {
             Ingredient checkIngredientInDatabase = new Ingredient();

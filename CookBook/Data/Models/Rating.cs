@@ -13,6 +13,7 @@ namespace CookBook
         public int Id { get; set; }
         public double Score { get; set; }
         public Recipe Recipe { get; set; }
+
         public Rating(double score, Recipe recipe)
         {
             this.Score = score;

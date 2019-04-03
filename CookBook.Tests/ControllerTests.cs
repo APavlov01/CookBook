@@ -111,11 +111,12 @@ namespace Tests
         {
             Controller controller = new Controller();
             RecipeContext recipeContext = new RecipeContext();
-            Recipe recipe = new Recipe("egg", "tomato 3", "description#");
+            Recipe recipe = new Recipe("soup", "tomato 3", "vari domati i si ti");
             Rating rating = new Rating(4, recipe);
-            var result = controller.CalculateRating(recipe);
-            var expectedresult = 4;
-            Assert.AreEqual(expectedresult, result);
+            double result = controller.CalculateRating(recipe);
+            double expectedResult = 4;
+            Assert.AreEqual(expectedResult, result);
+            
         }
         [Test]
         public void CalculateCaloriesTest()

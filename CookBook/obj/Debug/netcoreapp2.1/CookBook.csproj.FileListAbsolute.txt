@@ -20,3 +20,14 @@ D:\Projects\CookBookGit\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfoIn
 D:\Projects\CookBookGit\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfo.cs
 D:\Projects\CookBookGit\CookBook\obj\Debug\netcoreapp2.1\CookBook.dll
 D:\Projects\CookBookGit\CookBook\obj\Debug\netcoreapp2.1\CookBook.pdb
+C:\Users\aiwan\Desktop\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.deps.json
+C:\Users\aiwan\Desktop\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.runtimeconfig.json
+C:\Users\aiwan\Desktop\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.runtimeconfig.dev.json
+C:\Users\aiwan\Desktop\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.dll
+C:\Users\aiwan\Desktop\CookBook\CookBook\bin\Debug\netcoreapp2.1\CookBook.pdb
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.csprojAssemblyReference.cache
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.csproj.CoreCompileInputs.cache
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfoInputs.cache
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.AssemblyInfo.cs
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.dll
+C:\Users\aiwan\Desktop\CookBook\CookBook\obj\Debug\netcoreapp2.1\CookBook.pdb

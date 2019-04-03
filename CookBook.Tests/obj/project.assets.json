@@ -2035,8 +2035,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.SqlServer": "2.2.3",
-          "Microsoft.NETCore.App": "2.1.0"
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.2.3"
         },
         "compile": {
           "bin/placeholder/CookBook.dll": {}
@@ -3604,7 +3603,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "sha512": "NoPBj0ykejqAWW4p4gGtrrL+3c84ZLSvGnHgq422ew1Rj4WKj1FA8/BCybqC111EtgcqUl6ZJNFYYS22HLgbjA==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -3859,7 +3858,7 @@
       ]
     },
     "System.ComponentModel.Primitives/4.3.0": {
-      "sha512": "j8GUkCpM8V4d4vhLIIoBLGey2Z5bCkMVNjEZseyAlm4n5arcsJOeI3zkUP+zvZgzsbLTYh4lYeP/ZD/gdIAPrw==",
+      "sha512": "KMVuoQ+8bMQ/Z59M3s64num5AD74X5YSqVc7ibwGkPTfmmkl2W8VuSxLRJtpw4KzQrSKUgR0BLbF0adPfcTSGQ==",
       "type": "package",
       "path": "system.componentmodel.primitives/4.3.0",
       "files": [
@@ -6918,23 +6917,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Alex\\.nuget\\packages\\": {},
+    "C:\\Users\\aiwan\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\CookBookGit\\CookBook.Tests\\CookBook.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook.Tests\\CookBook.Tests.csproj",
       "projectName": "CookBook.Tests",
-      "projectPath": "D:\\Projects\\CookBookGit\\CookBook.Tests\\CookBook.Tests.csproj",
-      "packagesPath": "C:\\Users\\Alex\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\CookBookGit\\CookBook.Tests\\obj\\",
+      "projectPath": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook.Tests\\CookBook.Tests.csproj",
+      "packagesPath": "C:\\Users\\aiwan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Alex\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\aiwan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6947,8 +6946,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\Projects\\CookBookGit\\CookBook\\CookBook.csproj": {
-              "projectPath": "D:\\Projects\\CookBookGit\\CookBook\\CookBook.csproj"
+            "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook\\CookBook.csproj": {
+              "projectPath": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook\\CookBook.csproj"
             }
           }
         }
@@ -6967,6 +6966,7 @@
             "version": "[15.8.0, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

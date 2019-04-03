@@ -3590,23 +3590,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Alex\\.nuget\\packages\\": {},
+    "C:\\Users\\aiwan\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\CookBookGit\\CookBook\\CookBook.csproj",
+      "projectUniqueName": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook\\CookBook.csproj",
       "projectName": "CookBook",
-      "projectPath": "D:\\Projects\\CookBookGit\\CookBook\\CookBook.csproj",
-      "packagesPath": "C:\\Users\\Alex\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\CookBookGit\\CookBook\\obj\\",
+      "projectPath": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook\\CookBook.csproj",
+      "packagesPath": "C:\\Users\\aiwan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\aiwan\\Desktop\\CookBook\\CookBook\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Alex\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\aiwan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3641,6 +3641,7 @@
             "version": "[2.2.3, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

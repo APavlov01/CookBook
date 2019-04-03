@@ -131,7 +131,7 @@ namespace CookBook
 
         public string GetIngredients()
         {
-            Console.Write("Enter ingredients: ");
+            Console.Write("Enter ingredient: ");
 
             string ingredient = Console.ReadLine();
 
@@ -173,6 +173,18 @@ namespace CookBook
             Console.WriteLine("Do you want to add a new ingredient or to edit/remove an existing one.");
             string input = Console.ReadLine();
             return input;
+        }
+
+        internal int GetIngredientIndex() {
+            Console.WriteLine("Which ingredient do you want to edit? (enter a number): ");
+            int index = int.Parse(Console.ReadLine());
+            return index;
+        }
+
+        internal int GetQuantity() {
+            Console.WriteLine("Enter new quantity: ");
+            int quantity = int.Parse(Console.ReadLine());
+            return quantity;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CookBook {
         private RecipeContext recipeContext = new RecipeContext();
         private string command;
         private string result;
-        private double caloriesPerRecipe = 0;
+
         public Controller() {
 
         }
@@ -35,6 +35,9 @@ namespace CookBook {
                     break;
                 case "update":
                     Update();
+                    break;
+                case "delete":
+                    Delete();
                     break;
             }
         }
@@ -167,7 +170,7 @@ namespace CookBook {
                     sb.Append("-");
                 }
                 counter++;
-                sb.Append("|" + ingredientToParse[argumentsCount]);
+                sb.Append(" " + ingredientToParse[argumentsCount]);
                 if (ingredientArgs.Count - counter > 0) {
                     sb.Append(";");
                 }
@@ -393,7 +396,7 @@ namespace CookBook {
                 }
                 display.PrintResult(result);
             }
-            
+
             Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
 
             result = RecipeOutput(recipe);
@@ -475,27 +478,95 @@ namespace CookBook {
 
             switch (command) {
                 case "add":
-                    UpdateIngredientsAdd();
+                    UpdateIngredientsAdd(recipe);
                     break;
                 case "remove":
-                    UpdateIngredientsRemove();
+                    UpdateIngredientsRemove(recipe);
                     break;
                 case "edit":
-                    UpdateIngredientsEdit();
+                    UpdateIngredientsEdit(recipe);
                     break;
             }
         }
 
-        private void UpdateIngredientsEdit() {
-            throw new NotImplementedException(); //TODO
+        private void UpdateIngredientsEdit(Recipe recipe) {
+            var allIngredients = recipe.Ingredients.Split(";").ToArray();
+            string[] ingredient = null;
+            int index = 0;
+            int newQuantity =0;
+            int ingredientNameIndex = 0;
+            int ingredientQuantityIndex = 1;
+            string updatedIngredient = null;
+            StringBuilder sb = new StringBuilder();
+
+            while (true) {
+                try {
+                    index = display.GetIngredientIndex() - 1;
+                    newQuantity = display.GetQuantity();
+                    break;
+                }
+                catch {
+                    result = "Invalid input!";
+                    display.PrintResult(result);
+                }
+            }
+
+            ingredient = allIngredients[index].Split();
+            ingredient[ingredientQuantityIndex] = newQuantity.ToString();
+            updatedIngredient = ingredient[ingredientNameIndex] + " " + ingredient[ingredientQuantityIndex];
+
+            for (int i = 0; i < allIngredients.Length; i++) {
+                if(i == index) {
+                    sb.Append(updatedIngredient);
+                }
+                else {
+                    sb.Append(allIngredients[i]);
+                }
+                sb.Append(";");
+            }
+            recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
+            recipeContext.Recipes.Update(recipe);
+            recipeContext.SaveChanges();
+            
+
         }
 
-        private void UpdateIngredientsRemove() {
-            throw new NotImplementedException(); //TODO
+        private void UpdateIngredientsRemove(Recipe recipe) {
+            var allIngredients = recipe.Ingredients.Split(";").ToArray();
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+            result = RecipeOutput(recipe);
+            display.PrintResult(result);
+            while (true) {
+                try {
+                    index = display.GetIngredientIndex() - 1;
+                    break;
+                }
+                catch {
+                    result = "Invalid input!";
+                    display.PrintResult(result);
+                }
+            }
+            for (int i = 0; i < allIngredients.Length; i++) {
+                if (i == index) {
+                    continue;
+                }
+                sb.Append(allIngredients[i] + ";");
+            }
+
+            recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
+            recipeContext.Recipes.Update(recipe);
+            recipeContext.SaveChanges();
         }
 
-        private void UpdateIngredientsAdd() {
-            throw new NotImplementedException(); //TODO
+        private void UpdateIngredientsAdd(Recipe recipe) {
+            string ingredients = IngredientsRead();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(recipe.Ingredients + ";" + ingredients);
+            recipe.Ingredients = sb.ToString();
+            recipeContext.Recipes.Update(recipe);
+            recipeContext.SaveChanges();
+
         }
 
         private void UpdateDescription(Recipe recipe) {
@@ -508,6 +579,7 @@ namespace CookBook {
         private string RecipeOutput(Recipe recipe) {
             string ingredients = null;
             string description = null;
+            double caloriesPerRecipe = 0;
 
             ingredients = recipe.Ingredients;
             description = recipe.Description;
@@ -523,36 +595,51 @@ namespace CookBook {
             }
             rating /= ratingsCounter;
             sb.Append("\nName: " + recipe.Name + $"  Rating: {rating:F2}" + "\n" + "\nIngredients:\n");
+            caloriesPerRecipe = CalculateCalories(ingredients);
             ingredients = IngredientsToPlainText(ingredients);
             sb.Append(ingredients + "\n");
             description = recipe.Description;
 
+
+
             sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {caloriesPerRecipe:F2}");
 
-
             return sb.ToString();
+        }
+
+        private double CalculateCalories(string ingredients) {
+            Ingredient checkIngredientInDatabase = new Ingredient();
+            double calories = 0;
+            int ingredientNameIndex = 0;
+            int ingredientQuantityIndex = 1;
+            var allIngredients = ingredients.Split(";").ToArray(); //separates the ingredients
+
+            foreach (var ingredient in allIngredients) {
+                var ingredientAndQuantity = ingredient.Split().ToArray();
+                string ingredientName = ingredientAndQuantity[ingredientNameIndex];
+                int ingredientQuantity = int.Parse(ingredientAndQuantity[ingredientQuantityIndex]);
+
+                checkIngredientInDatabase = recipeContext.Ingredients.Single(x => x.Name == ingredientName);
+                calories += (checkIngredientInDatabase.Calories * ingredientQuantity) / 100;
+            }
+
+            return calories;
         }
 
         private string IngredientsToPlainText(string ingredients) {
             List<string> allIngredients = ingredients.Split(";").ToList();
             StringBuilder sb = new StringBuilder();
+            int i = 1;
             foreach (var ingredient in allIngredients) {
-                List<string> ingredientAndQuantity = ingredient.Split("|").ToList();
-                sb.Append("- " + ingredientAndQuantity[0] + " " + ingredientAndQuantity[1] + " ");
+                List<string> ingredientAndQuantity = ingredient.Split().ToList();
+                sb.Append(i + " " + ingredientAndQuantity[0] + " " + ingredientAndQuantity[1] + " ");
                 Ingredient check = new Ingredient();
-                check.Name = ingredientAndQuantity[0];
+                string ingredientName = ingredientAndQuantity[0];
                 string type = null;
-                foreach (Ingredient checkInDatabase in recipeContext.Ingredients) {
-                    if (check.Name == checkInDatabase.Name) {
-                        check = checkInDatabase;
-                        caloriesPerRecipe += (check.Calories * double.Parse(ingredientAndQuantity[1])) / 100;
-                        break;
-
-                    }
-
-                }
+                check = recipeContext.Ingredients.Single(x => x.Name == ingredientName);
                 type = check.Type;
                 sb.Append(type + "\n");
+                i++;
 
             }
             string ingredientsInPLainText = sb.ToString();

@@ -4,17 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookBook
-{
-    public class Display
-    {
-        public Display()
-        {
+namespace CookBook {
+    public class Display {
+        public Display() {
 
         }
 
-        public void WelcomeScreen()
-        {
+        public void WelcomeScreen() {
             for (int i = 0; i < 120; i++) Console.Write("-");
             for (int i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Welcome to CookBook!");
             for (int i = 0; i < 120; i++) Console.Write("-");
@@ -30,28 +26,26 @@ namespace CookBook
             Console.WriteLine("- Update");
             Console.WriteLine("- Rate");
             Console.WriteLine("- Exit");
+            Console.WriteLine("- Top 5");
+            Console.WriteLine("- Show all");
         }
 
-        public string GetCommand()
-        {
-            string[] commands = { "add", "delete", "search", "exit","rate", "update" };
+        public string GetCommand() {
+            string[] commands = { "add", "delete", "search", "exit", "rate", "update", "top 5", "show all" };
             Console.Write("\nChoose an option: ");
             var choice = Console.ReadLine().ToLower();
-            while (!commands.Contains(choice))
-            {
+            while (!commands.Contains(choice)) {
                 Console.WriteLine("Choice not valid!");
                 Console.Write("\nChoose an option: ");
                 choice = Console.ReadLine().ToLower();
             }
-            if (choice == "exit")
-            {
+            if (choice == "exit") {
                 Environment.Exit(0);
             }
             return choice;
         }
 
-        public void RatingCmdDisplay()
-        {
+        public void RatingCmdDisplay() {
             Console.Clear();
 
             int i = 0;
@@ -64,8 +58,7 @@ namespace CookBook
             Console.WriteLine("- If you rate a recipe multiple times, the rating of the recipe will be averaged");
         }
 
-        public void DeleteCmdDisplay()
-        {
+        public void DeleteCmdDisplay() {
             Console.Clear();
 
             int i = 0;
@@ -77,8 +70,7 @@ namespace CookBook
             Console.WriteLine("- You can only delete an existing recipe");
         }
 
-        public void SearchCmdDisplay()
-        {
+        public void SearchCmdDisplay() {
             Console.Clear();
 
             int i = 0;
@@ -90,8 +82,7 @@ namespace CookBook
             Console.WriteLine("- You can only search for an existing recipe");
         }
 
-        public void UpdateCmdDisplay()
-        {
+        public void UpdateCmdDisplay() {
             Console.Clear();
 
             int i = 0;
@@ -105,8 +96,7 @@ namespace CookBook
             Console.WriteLine("- Type either ingredients,description or name to edit");
         }
 
-        public void AddCmdDisplay()
-        {
+        public void AddCmdDisplay() {
             Console.Clear();
             int i = 0;
             for (i = 0; i < 120; i++) Console.Write("-");
@@ -116,12 +106,11 @@ namespace CookBook
             Console.WriteLine("- This command lets you add a new recipe with all its characteristics");
             Console.WriteLine("- After you enter an ingredient and its ml or grams, press Enter to enter new ingredient");
             Console.WriteLine("- After you entered your ingredients enter 'end' as an ingredient to finish your input");
-            Console.WriteLine("- In the description you say how the meal is made and after you finished writing it enter '#' and press ENTER");   
+            Console.WriteLine("- In the description you say how the meal is made and after you finished writing it enter '#' and press ENTER");
         }
 
 
-        public string GetRecipeName()
-        {
+        public string GetRecipeName() {
             Console.Write("\nName: ");
 
             string RecipeName = Console.ReadLine();
@@ -129,8 +118,7 @@ namespace CookBook
             return RecipeName;
         }
 
-        public string GetIngredients()
-        {
+        public string GetIngredients() {
             Console.Write("Enter ingredient: ");
 
             string ingredient = Console.ReadLine();
@@ -138,8 +126,7 @@ namespace CookBook
             return ingredient;
         }
 
-        public string GetDescription()
-        {
+        public string GetDescription() {
             Console.Write("Enter description: ");
 
             string description = Console.ReadLine();
@@ -147,23 +134,19 @@ namespace CookBook
             return description;
         }
 
-        public int GetRating()
-        {
+        public int GetRating() {
             Console.Write("Enter rating between 0 and 5: ");
             int rating = int.Parse(Console.ReadLine());
             return rating;
         }
 
-        public void PrintResult(string result)
-        {
-            if(!string.IsNullOrEmpty(result))
-            {
+        public void PrintResult(string result) {
+            if (!string.IsNullOrEmpty(result)) {
                 Console.WriteLine(result);
             }
         }
 
-        public void ReturnToMainMenuScreen()
-        {
+        public void ReturnToMainMenuScreen() {
             Console.WriteLine("Press any key to return to the main menu.");
             Console.ReadKey();
             Console.Clear();
@@ -185,6 +168,29 @@ namespace CookBook
             Console.WriteLine("Enter new quantity: ");
             int quantity = int.Parse(Console.ReadLine());
             return quantity;
+        }
+
+        internal void DisplayTop5(string output) {
+            int i = 0;
+            Console.Clear();
+            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Top 5 recipes.");
+            for (i = 0; i < 120; i++) Console.Write("-");
+            Console.WriteLine(output);
+        }
+
+        internal void DisplayAllRecipes(string output) {
+            int i = 0;
+            Console.Clear();
+            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("All recipes.");
+            for (i = 0; i < 120; i++) Console.Write("-");
+            Console.WriteLine(output);
+        }
+
+        internal void DisplayRecipe(string result) {
+            Console.Clear();
+            Console.WriteLine(result);
         }
     }
 }

@@ -18,11 +18,6 @@ namespace CookBook {
         public void Start() {
             display.WelcomeScreen();
             command = display.GetCommand();
-            //if (command == "add") { Console.Clear(); Add(); }
-            //else if (command == "rate") { Console.Clear(); Rate(); }
-            //else if (command == "delete") { Console.Clear(); Delete(); }
-            //else if (command == "search") { Console.Clear(); Search(); }
-            //else if (command == "update") { Console.Clear(); Update(); }
             switch (command) {
                 case "add":
                     Add();
@@ -39,8 +34,17 @@ namespace CookBook {
                 case "delete":
                     Delete();
                     break;
+                case "top 5":
+                    Top5();
+                    break;
+                case "show all":
+                    ShowAll();
+                    break;
             }
         }
+
+
+
         private void Add() {
             string recipeName = null;
             string ingredients = null;
@@ -68,7 +72,6 @@ namespace CookBook {
             display.ReturnToMainMenuScreen();
             Start();
         }
-        //Add function bug: Pressing enter on name without inputting anything =====> See RecipeRead() ====>fixed
         private string RecipeRead() {
             string recipeName = null;
             int validator = 0;
@@ -76,7 +79,7 @@ namespace CookBook {
             do {
                 recipeName = display.GetRecipeName().ToLower();
                 if (ValidateRecipeName(recipeName) != -1) {
-                    recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1); // That caused the problem
+                    recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
 
                 validator = ValidateRecipeName(recipeName);
@@ -129,8 +132,6 @@ namespace CookBook {
                         result = "Successfuly added ingredient!\n";
                         ingredientCount++;
                         ingredientsToParse.Add(ingredientArgs);
-                        //var ingredient = IngredientParsing(ingredientArgs);
-                        //ingredients.Add(ingredient);
                     }
 
                     else if (validator == -1) {
@@ -154,7 +155,7 @@ namespace CookBook {
 
             display.PrintResult(result);
             ingredients = IngredientParse(ingredientsToParse);
-            return ingredients;  //TO DO implement IngredientParsing() method 
+            return ingredients;
         }
 
         private string IngredientParse(List<string> ingredientArgs) {
@@ -401,7 +402,7 @@ namespace CookBook {
             Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
 
             result = RecipeOutput(recipe);
-            display.PrintResult(result);
+            display.DisplayRecipe(result);
 
             display.ReturnToMainMenuScreen();
             Start();
@@ -494,7 +495,7 @@ namespace CookBook {
             var allIngredients = recipe.Ingredients.Split(";").ToArray();
             string[] ingredient = null;
             int index = 0;
-            int newQuantity =0;
+            int newQuantity = 0;
             int ingredientNameIndex = 0;
             int ingredientQuantityIndex = 1;
             string updatedIngredient = null;
@@ -517,7 +518,7 @@ namespace CookBook {
             updatedIngredient = ingredient[ingredientNameIndex] + " " + ingredient[ingredientQuantityIndex];
 
             for (int i = 0; i < allIngredients.Length; i++) {
-                if(i == index) {
+                if (i == index) {
                     sb.Append(updatedIngredient);
                 }
                 else {
@@ -529,7 +530,7 @@ namespace CookBook {
             recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
-            
+
 
         }
 
@@ -587,6 +588,19 @@ namespace CookBook {
             ingredients = recipe.Ingredients;
             description = recipe.Description;
             StringBuilder sb = new StringBuilder();
+            double rating = CalculateRating(recipe);
+
+            sb.Append("\nName: " + recipe.Name + $"  Rating: {rating:F2}" + "\n" + "\nIngredients:\n");
+            ingredients = IngredientsToPlainText(ingredients);
+            sb.Append(ingredients + "\n");
+            description = recipe.Description;
+
+            sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {recipe.Calories:F2}");
+
+            return sb.ToString();
+        }
+
+        private double CalculateRating(Recipe recipe) {
             double rating = 0;
             int ratingsCounter = 0;
             foreach (Rating ratingInDB in recipeContext.Ratings) {
@@ -597,16 +611,8 @@ namespace CookBook {
 
             }
             rating /= ratingsCounter;
-            sb.Append("\nName: " + recipe.Name + $"  Rating: {rating:F2}" + "\n" + "\nIngredients:\n");
-            ingredients = IngredientsToPlainText(ingredients);
-            sb.Append(ingredients + "\n");
-            description = recipe.Description;
 
-
-
-            sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {recipe.Calories:F2}");
-
-            return sb.ToString();
+            return rating;
         }
 
         private double CalculateCalories(string ingredients) {
@@ -647,6 +653,44 @@ namespace CookBook {
             string ingredientsInPLainText = sb.ToString();
 
             return ingredientsInPLainText;
+        }
+
+        private void Top5() {
+            var recipes = recipeContext.Recipes;
+            StringBuilder sb = new StringBuilder();
+            Dictionary<string, double> recipesAndRating = new Dictionary<string, double>();
+
+            foreach (var recipe in recipes) {
+                string recipeName = recipe.Name;
+                double rating = CalculateRating(recipe);
+                recipesAndRating.Add(recipeName, rating);
+            }
+
+            recipesAndRating = recipesAndRating.OrderByDescending(x => x.Value).Take(5).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var recipe in recipesAndRating) {
+                string recipeName = recipe.Key;
+                double rating = recipe.Value;
+                sb.Append("- " + recipeName + ", Rating: " + rating + Environment.NewLine);
+            }
+            display.DisplayTop5(sb.ToString());
+            display.ReturnToMainMenuScreen();
+            Start();
+        }
+
+        private void ShowAll() {
+            var allRecipes = recipeContext.Recipes.ToArray();
+            StringBuilder output = new StringBuilder();
+            int counter = 1;
+
+            foreach (var recipe in allRecipes) {
+                string recipeName = recipe.Name;
+                output.Append(counter + ". " + recipeName + Environment.NewLine);
+                counter++;
+            }
+            display.DisplayAllRecipes(output.ToString());
+            display.ReturnToMainMenuScreen();
+            Start();
         }
     }
 }

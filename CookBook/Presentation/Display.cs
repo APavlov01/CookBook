@@ -25,9 +25,9 @@ namespace CookBook {
             Console.WriteLine("- Search");
             Console.WriteLine("- Update");
             Console.WriteLine("- Rate");
-            Console.WriteLine("- Exit");
             Console.WriteLine("- Top 5");
             Console.WriteLine("- Show all");
+            Console.WriteLine("- Exit");
         }
 
         public string GetCommand() {
@@ -152,25 +152,25 @@ namespace CookBook {
             Console.Clear();
         }
 
-        internal string UpdateIngredientsScreen() {
+        public string UpdateIngredientsScreen() {
             Console.WriteLine("Do you want to add a new ingredient or to edit/remove an existing one.");
             string input = Console.ReadLine();
             return input;
         }
 
-        internal int GetIngredientIndex() {
+        public int GetIngredientIndex() {
             Console.WriteLine("Which ingredient do you want to edit? (enter a number): ");
             int index = int.Parse(Console.ReadLine());
             return index;
         }
 
-        internal int GetQuantity() {
+        public int GetQuantity() {
             Console.WriteLine("Enter new quantity: ");
             int quantity = int.Parse(Console.ReadLine());
             return quantity;
         }
 
-        internal void DisplayTop5(string output) {
+        public void DisplayTop5(string output) {
             int i = 0;
             Console.Clear();
             for (i = 0; i < 120; i++) Console.Write("-");
@@ -179,7 +179,7 @@ namespace CookBook {
             Console.WriteLine(output);
         }
 
-        internal void DisplayAllRecipes(string output) {
+        public void DisplayAllRecipes(string output) {
             int i = 0;
             Console.Clear();
             for (i = 0; i < 120; i++) Console.Write("-");
@@ -188,7 +188,7 @@ namespace CookBook {
             Console.WriteLine(output);
         }
 
-        internal void DisplayRecipe(string result) {
+        public void DisplayRecipe(string result) {
             Console.Clear();
             Console.WriteLine(result);
         }

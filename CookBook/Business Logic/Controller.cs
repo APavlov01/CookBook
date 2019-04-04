@@ -5,164 +5,226 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CookBook {
-    public class Controller {
+
+    public class Controller
+    {
+        /// <summary>
+        /// Initialization of the Display class so Display methods can be called.
+        /// </summary>
         private Display display = new Display();
+
+        /// <summary>
+        /// Initialization of the RecipeContext class so the database can be accessed and modified.
+        /// </summary>
         private RecipeContext recipeContext = new RecipeContext();
+
+        /// <summary>
+        /// Store for the command variable which is entered by the user.
+        /// </summary>
         private string command;
+
+        /// <summary>
+        /// Store for the result variable which is assigned differently depending on it's use and then given as an argument in the Display function called PrintResult.
+        /// </summary>
         private string result;
 
-        public Controller() {
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
+        public Controller()
+        {
 
         }
 
+        /// <summary>
+        /// This method uses the entered from the user command and depending on the command type the function connected with the command is called
+        /// For example if the command 'add' is entered the Add() function is called.
+        /// </summary>
         public void Start() {
-            display.WelcomeScreen();
-            command = display.GetCommand();
-            switch (command) {
-                case "add":
+            display.WelcomeScreen(); //Calls a function from Display class which displays the user interface for the Main menu.
+            command = display.GetCommand(); //Assigns the value of the user input to the command variable.
+            switch (command)
+            {
+                case "add": //If the command 'add' is entered by the user the function Add() is called.
                     Add();
                     break;
-                case "rate":
+                case "rate": //If the command 'rate' is entered by the user the function Rate() is called.
                     Rate();
                     break;
-                case "search":
+                case "search": //If the command 'search' is entered by the user the function Add() is called.
                     Search();
                     break;
-                case "update":
+                case "update": //If the command 'update' is entered by the user the function Update() is called.
                     Update();
                     break;
-                case "delete":
+                case "delete": //If the command 'delete' is entered by the user the function Delete() is called.
                     Delete();
                     break;
-                case "top 5":
+                case "top 5": //If the command 'top 5' is entered by the user the function Top5() is called.
                     Top5();
                     break;
-                case "show all":
+                case "show all": //If the command 'show all' is entered by the user the function ShowAll() is called.
                     ShowAll();
                     break;
             }
         }
 
 
-
+        /// <summary>
+        /// This method adds the recipe which is made by the user in the database.
+        /// In the method the user has to enter the name, ingredients and description of a recipe.
+        /// Each input has its own validation in a separate method.
+        /// </summary>
         public void Add() {
+
+            //Assigning variables
             string recipeName = null;
             string ingredients = null;
             string description = null;
             double callories = 0;
 
 
-            display.AddCmdDisplay();
-            recipeName = RecipeRead();
-            ingredients = IngredientsRead();
-            description = DescriptionRead();
-            callories = CalculateCalories(ingredients);
+            display.AddCmdDisplay(); //Calls a function from Display class which displays the user interface for the Add function.
+            recipeName = RecipeRead(); //Calls a function from the current class which returns the name of the recipe which the user entered.
+            ingredients = IngredientsRead(); //Calls a function from the current class which returns the ingredients of the recipe which the user entered.
+            description = DescriptionRead(); //Calls a function from the current class which returns the description of the recipe which the user entered.
+            callories = CalculateCalories(ingredients); //Calls a function which returns the calculated calories from all the ingredients in the recipe.
 
 
-            Recipe recipe = new Recipe {
-                Name = recipeName,
-                Ingredients = ingredients,
-                Description = description,
-                Calories = callories
+            Recipe recipe = new Recipe //Creating an object from class Recipe and assigning the values the user entered to its properties.
+            {
+                Name = recipeName, //Assigning property 'Name' of 'recipe' with the value of 'recipeName'.
+                Ingredients = ingredients, //Assigning property 'Ingredients' of 'recipe' with the value of 'ingredients'.
+                Description = description, //Assigning property 'Description' of 'recipe' with the value of 'description'.
+                Calories = callories //Assigning property 'Calories' of 'recipe' with the value of 'callories'.
             };
 
-            recipeContext.Recipes.Add(recipe);
-
-            recipeContext.SaveChanges();
-            display.ReturnToMainMenuScreen();
-            Start();
+            recipeContext.Recipes.Add(recipe); //Accessing the database context 'RecipeContext' class, then accessing the table from the database 'Recipes' and adds a new recipe.
+            recipeContext.SaveChanges(); //Saving the recipe to the database so it's not deleted after debugging.
+            display.ReturnToMainMenuScreen(); //Calls a function which allows the user to return to the main screen by pressing any key.
+            Start(); //Returning to main screen.
         }
 
-        public string RecipeRead() {
+        /// <summary>
+        /// This method reads the recipe name entered by the user and checks if the name is valid in various ways.
+        /// </summary>
+        /// <returns>Returns the name of the recipe entered by the user when it's a valid name</returns>
+        private string RecipeRead()
+        {
+            //Assigning variables
             string recipeName = null;
             int validator = 0;
 
-            do {
-                recipeName = display.GetRecipeName().ToLower();
-                if (ValidateRecipeName(recipeName) != -1) {
+            do //Until the user enters a valid recipe name the loop keeps checking the input
+            {
+                recipeName = display.GetRecipeName().ToLower(); //Assigning the user input to the variable 'recipeName'
+                if (ValidateRecipeName(recipeName) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
+                {
                     recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
 
-                validator = ValidateRecipeName(recipeName);
+                validator = ValidateRecipeName(recipeName); //Assigning the return of the ValidateRecipeName(string) method to the variable 'validator'.
 
-                if (validator == 0) {
+                if (validator == 0) //If the name entered by the user is already used, to the 'result' string is assigned the corresponding message
+                {
                     result = "Name already used!";
                 }
 
-                else if (validator == -1) {
+                else if (validator == -1) //If the name entered by the user is empty, to the 'result' string is assigned the corresponding message
+                {
                     result = "Name cannot be empty!";
                 }
 
-                else if (validator == 1) {
+                else if (validator == 1) //If the name entered by the user is unused and valid, to the 'result' string is assigned the corresponding message
+                {
                     result = "Successfully added recipe name!\n";
-                    break;
                 }
 
-                display.PrintResult(result);
+                display.PrintResult(result); //Displaying the message assigned to the 'result' string in the console.
 
             } while (ValidateRecipeName(recipeName) != 1);
 
-            display.PrintResult(result);
-
-            return recipeName;
+            return recipeName; //Returns the valid recipe name.
         }
 
-        public string IngredientsRead() {
+        /// <summary>
+        /// This method reads the recipe ingredients entered by the user and checks if the ingredients are valid in various ways.
+        /// </summary>
+        /// <returns>Returns the valid ingredients for the recipe entered by the user.</returns>
+        public string IngredientsRead()
+        {
+            //Assigning variables
             string ingredientArgs = "";
             int validator = 0;
-            bool continueReading = true;
             string ingredients = "";
             List<string> ingredientsToParse = new List<string>();
-
             int ingredientCount = 0;
 
-            while (continueReading) {
 
-                ingredientArgs = display.GetIngredients().ToLower();
+            while (true) //Until the user enters valid ingredients the loop keeps checking the input.
+            {
 
-                if (ingredientCount == 0 && ingredientArgs.Equals("end")) {
+                ingredientArgs = display.GetIngredients().ToLower(); // Assigning the user input to the 'ingredientArgs' string.
+                if (ingredientCount == 0 && ingredientArgs.Equals("end")) //If the user hasn't entered any ingredints and types 'end' a corresponding message is displayed for the invalid input!
+                {
                     result = "Please enter atleast one ingredient.";
                     display.PrintResult(result);
                 }
 
-                else if (!ingredientArgs.Equals("end")) {
+                else if (!ingredientArgs.Equals("end")) //Until the 'end' command is typed the the entered ingredients are added to the list of strings 'ingredientsToParse'.
+                {
 
-                    validator = ValidateIngredients(ingredientArgs);
+                    validator = ValidateIngredients(ingredientArgs); //Assigning the return of the ValidateIngredients(string) method to the variable 'validator'.
 
-                    if (validator == 1) {
+                    if (validator == 1) //If the entered ingredient exists in the database it's added to the list list of strings 'ingredientsToParse'.
+                    {
                         result = "Successfuly added ingredient!\n";
                         ingredientCount++;
                         ingredientsToParse.Add(ingredientArgs);
                     }
 
-                    else if (validator == -1) {
+                    else if (validator == -1) //If the entered ingredient quantity is entered incorrectly a corresponding message is assigned to the 'result' string.
+                    {
                         result = "Invalid quantity input!\n";
                     }
 
-                    else if (validator == 0) {
+                    else if (validator == 0) //If the entered ingredient doesn't exist in the database a corresponding message is assigned to the 'result' string.
+                    {
                         result = "Ingredient doesn't exist!\n";
                     }
-                    display.PrintResult(result);
+                    display.PrintResult(result); //Displaying the 'result' string in the console.
                 }
 
-                else {
-                    continueReading = false;
+                else //If the 'end' command is entered after successfully adding atleast one ingredient the process of adding ingredients to the recipe is finished.
+                { 
                     break;
                 }
 
             }
 
+            //Displaying that the process of adding ingredients to the recipe is finished.
             result = "Finished adding ingredients!\n";
-
             display.PrintResult(result);
-            ingredients = IngredientParse(ingredientsToParse);
-            return ingredients;
+
+            ingredients = IngredientParse(ingredientsToParse); //Transforming the list of strings 'ingredientsToParse' to a single string.
+            return ingredients; //Returns the valid parsed ingredients
         }
 
-        public string IngredientParse(List<string> ingredientArgs) {
+        /// <summary>
+        /// Transforming the list of strings 'ingredientsArgs' to a single string.
+        /// </summary>
+        /// <param name="ingredientArgs">A list of ingredients.</param>
+        /// <returns>Returns the parsed ingredients.</returns>
+        public string IngredientParse(List<string> ingredientArgs)
+        {
+            //Assigning variables
             StringBuilder sb = new StringBuilder();
             int counter = 0;
-            foreach (var ingredient in ingredientArgs) {
+
+            //For each ingredient in the list the string builder adds the name and the quantity of the ingredient.
+            //If there is more than one ingredient a ';' is added for the purpose of separation.
+            foreach (var ingredient in ingredientArgs)
+            {
                 List<string> ingredientToParse = ingredient.Split().ToList();
                 int argumentsCount = ingredientToParse.Count - 1;
                 for (int i = 0; i < argumentsCount; i++) {
@@ -179,24 +241,37 @@ namespace CookBook {
                 }
 
             }
-            string ingredientParsed = sb.ToString().ToLower();
-            return ingredientParsed;
-        } //Tested
 
-        public string DescriptionRead() {
+            string ingredientParsed = sb.ToString().ToLower(); //Parsing the stringbuilder to string.
+            return ingredientParsed; //Returning the single string which contains the ingredients
+        }
+
+        /// <summary>
+        /// This method reads the recipe description entered by the user and checks if the description is valid in various ways.
+        /// </summary>
+        /// <returns>Returns the valid description.</returns>
+        public string DescriptionRead()
+        {
+            //Assigning variables
             int paragraphCount = 1;
             int validator = 0;
             string description = null;
-
             StringBuilder sb = new StringBuilder();
-            do {
+
+            //Until the user enters a valid description the console is displaying a corresponding message and checks again.
+            do
+            {
+                //Assigning the user input to the 'paragraph' string. 
                 string paragraph = display.GetDescription();
 
                 validator = ValidateDescription(paragraph, paragraphCount);
 
-                if (validator == 1) {
+                //If the description is valid a corresponding message is assigned to the 'result' string.
+                if (validator == 1)
+                {
                     result = "Successfully added description!";
                 }
+                //If the description is invalid a corresponding message is assigned to the 'result' string.
                 else if (validator == -1 || validator == 0) {
                     result = "Please enter a valid paragraph.";
                     display.PrintResult(result);
@@ -208,119 +283,202 @@ namespace CookBook {
 
             } while (validator != 1);
 
+            //Transforming the Stringbuilder to a single string.
             description = sb.ToString();
+            //Removing the last two elemtents of the string. In the case it removes the '#' and the ENTER.
             description = description.Remove(description.Length - 2);
+            //Displaying the corresponding message assigned to the 'result' string.
             display.PrintResult(result);
-
+            //Returning the valid description
             return description;
         }
 
-        public int ValidateDescription(string description, int paragraphCount) {
-            if (string.IsNullOrEmpty(description)) {
+        /// <summary>
+        /// This method validates the recipe description entered by the user in various ways.
+        /// </summary>
+        /// <param name="description">A string of the entered by the user description.</param>
+        /// <param name="paragraphCount">An integer showing how many paragraphs are in the description.</param>
+        /// <returns>Returns a corresponding integer whether the description is valid or not.</returns>
+        public int ValidateDescription(string description, int paragraphCount)
+        {
+            //If the entered description is empty and has no elements the method returns -1;
+            if (string.IsNullOrEmpty(description))
+            {
                 return -1;
             }
-            else if (description.Equals("#") && paragraphCount == 1) {
+            //If the entered description has only '#' and no other elements, the method returns 0;
+            else if (description.Equals("#") && paragraphCount == 1)
+            {
                 return 0;
             }
-            else if (description.EndsWith("#")) {
+            //If the entered description has '#' in the end, the method returns 1;
+            else if (description.EndsWith("#"))
+            {
                 return 1;
             }
+            return 2;
+        }
 
-            return 2;//Unit test for that or Nah???If yes ====> else return 1;
-        } //Tested
-
-        public int ValidateIngredients(string ingredient) {
+        /// <summary>
+        /// This method validates the recipe ingredients entered by the user in various ways.
+        /// </summary>
+        /// <param name="ingredient">A string of the entered by the user ingredients.</param>
+        /// <returns>Returns a corresponding integer whether the ingredient is valid or not.</returns>
+        public int ValidateIngredients(string ingredient)
+        {
+            //Assigning variables
             List<string> ingredientArguments = ingredient.Split().ToList();
             StringBuilder sb = new StringBuilder();
             int argumentCount = ingredientArguments.Count - 1;
-            for (int i = 0; i < argumentCount; i++) {
-                sb.Append(ingredientArguments[i]); // eggs-yolk
+
+            //Separates the words in the ingredient name by adding '-' between them.
+            for (int i = 0; i < argumentCount; i++)
+            {
+                sb.Append(ingredientArguments[i]); 
                 if (i == argumentCount - 1) {
                     break;
                 }
                 sb.Append("-");
             }
+
+            //Assigning the table 'Ingredients' from database to the variable 'check' transforming it to a list.
             var check = recipeContext.Ingredients.ToList();
-            try {
+
+            //If the ingredient doesn't exist in the table 'Ingredients' in database the method returns 0;
+            try
+            {
                 check.Single(x => x.Name.ToLower() == sb.ToString().ToLower());
             }
-            catch {
+            catch
+            {
                 return 0;
             }
-            try {
+
+            //If the ingredient quantity is invalid returns -1;
+            try
+            {
                 double.Parse(ingredientArguments[argumentCount]);
             }
-            catch {
+            catch
+            {
                 return -1;
             }
 
-            if (double.Parse(ingredientArguments[argumentCount]) <= 0) {
+            //If the ingredient quantity is negative number returns -1;
+            if (double.Parse(ingredientArguments[argumentCount]) <= 0)
+            {
                 return -1;
             }
 
-
+            //After the validation the ingredient is accepted as valid and the method returns 1;
             return 1;
-        } //Tested
+        }
 
-        public int ValidateRecipeName(string recipeName) {
+        /// <summary>
+        /// This method validates the recipe name entered by the user in various ways.
+        /// </summary>
+        /// <param name="recipeName">A string containing the entered name by the user.</param>
+        /// <returns>Returns a corresponding integer whether the ingredient is valid or not.</returns>
+        public int ValidateRecipeName(string recipeName)
+        {
+            //If the entered name has no elements and it's empty, the method returns -1;
             if (string.IsNullOrEmpty(recipeName)) {
                 return -1;
             }
-            try {
+
+            //If the name already exists in the database, the method returns 0, if not returns 1.
+            try
+            {
                 recipeContext.Recipes.Single(x => x.Name == recipeName);
                 return 0;
             }
-            catch {
+            catch
+            {
                 return 1;
             }
-        }  //Tested
+        }
 
-        public void Rate() {
+        /// <summary>
+        /// This method rates a certain recipe chosen by the user.
+        /// </summary>
+        public void Rate()
+        {
+            //Calls a method from Display class which displays the user interface of the rating menu.
             display.RatingCmdDisplay();
+            //Calls a method which adds a rating to an existing recipe chosen by the user.
             AddRating();
+            
+            //Allows the user to return to the main menu of the program.
             display.ReturnToMainMenuScreen();
             Start();
         } 
 
-        public void AddRating() {
+        /// <summary>
+        /// This method adds a rating to an existing recipe chosen by the user.
+        /// </summary>
+        public void AddRating()
+        {
+            //Assigning variables.
             string recipeName = null;
             int validator = 0;
             int rating = 0;
 
-            do {
+            //Until the user enters a valid recipe the loop keeps checking the input.
+            do
+            {
                 recipeName = display.GetRecipeName().ToLower();
 
                 validator = ValidateRecipeName(recipeName);
 
-                if (validator == 0) {
+                //If the recipe name entered by the user exists in the database, a corresponding message is assigned to the 'result' string and the loop stops.
+                if (validator == 0)
+                {
                     result = "Successfully found recipe!";
                     break;
                 }
-                else if (validator == -1) {
+
+                //If the recipe name entered by the user has no elements or it's empty a corresponding message is assigned to the 'result'.
+                else if (validator == -1)
+                {
                     result = "Name cannot be empty!";
                 }
-                else if (validator == 1) {
+
+                //If the recipe name entered by the user doesn't exist in the database, a corresponding message is assigned to the 'result'.
+                else if (validator == 1)
+                {
                     result = "Such recipe doesn't exist!";
                 }
 
+                //Displaying the message in the 'result' string.
                 display.PrintResult(result);
 
             } while (ValidateRecipeName(recipeName) != 0);
 
-            do {
-                try {
+            //Until the user enters a valid rating value the loop keeps checking the input.
+            do
+            {
+                try
+                {
                     rating = display.GetRating();
-                    if (rating < 0 || rating > 5) {
+
+                    //If the rating in less than 0 and more than 5 a corresponding message is assigned to the 'result'.
+                    if (rating < 0 || rating > 5)
+                    {
                         result = "Rating must be between 0 and 5!";
                         validator = -1;
                     }
-                    else {
+
+                    //If the rating in valid a corresponding message is assigned to the 'result'.
+                    else
+                    {
                         result = "Rating is valid.Adding to database.";
                         validator = 1;
                     }
                 }
 
-                catch {
+                //If the rating is not an integer a corresponding message is assigned to the 'result'
+                catch
+                {
                     result = "Rating must be an integer!";
                     validator = 0;
                 }
@@ -328,90 +486,142 @@ namespace CookBook {
 
             } while (validator != 1);
 
+            //Connecting the valid recipe name to the recipe in the database table 'Recipes'.
             Recipe recipeToRate = recipeContext.Recipes.Single(x => x.Name == recipeName);
-            Rating ratingToAdd = new Rating();
-            ratingToAdd.Score = rating;
-            ratingToAdd.Recipe = recipeToRate;
+            //Assigning the rating entered by the user and the related recipe to Rating properties.
+            Rating ratingToAdd = new Rating
+            {
+                Score = rating,
+                Recipe = recipeToRate
+            };
+
+            //Adding the rating for the recipe to the 'Ratings' table in the database.
             recipeContext.Ratings.Add(ratingToAdd);
+            //Saving changes to the database.
             recipeContext.SaveChanges();
+
+            //Displaying that the rating has been added to the recipe.
             result = "Rating added to database!";
             display.PrintResult(result);
         }
 
-        public void Delete() {
+        /// <summary>
+        /// This method deletes an existing recipe chosen by the user.
+        /// </summary>
+        public void Delete()
+        {
+            //Displaying user interface for the Delete method.
             display.DeleteCmdDisplay();
 
+            //Assigning variables.
             string recipeName = null;
-
             int validator = 0;
-
             Recipe recipe = new Recipe();
-
             StringBuilder sb = new StringBuilder();
 
-            while (ValidateRecipeName(recipeName) != 0) {
+            //Checks if the recipe exists in the database
+            while (ValidateRecipeName(recipeName) != 0)
+            {
+                //Assigning the user input to the 'recipeName' string.
                 recipeName = display.GetRecipeName().ToLower();
 
                 validator = ValidateRecipeName(recipeName);
-
-                if (validator == 0) {
+                
+                //If the recipe exists in the database a corresponding message is assigned to the 'result' string and the loop stops.
+                if (validator == 0)
+                {
                     result = "Successfully deleted recipe!";
                     break;
                 }
-                else if (validator == -1) {
+
+                //If the recipe entered by the user has no elements or is empty a corresponding message is assigned to the 'result' string.
+                else if (validator == -1)
+                {
                     result = "Name cannot be empty!";
                 }
-                else if (validator == 1) {
+
+                //If the recipe entered by the user doesn't exist in the database a corresponding message is assigned to the 'result' string.
+                else if (validator == 1)
+                {
                     result = "Such recipe doesn't exist!";
                 }
 
+                //Displays the message from the 'result' string.
                 display.PrintResult(result);
 
             }
 
+            //Assigning the valid name to a Recipe property.
             recipe.Name = recipeName;
+            //Deleting the recipe from the database.
             recipeContext.Remove(recipeContext.Recipes.Single(x => x.Name == recipe.Name));
+            //Saving changes to the database.
             recipeContext.SaveChanges();
 
-            sb.Append(result + "\n" + "Press ENTER to go to the main menu");
-            display.PrintResult(sb.ToString());
-
+            //Allows the user to return to the main menu of the program.
             display.ReturnToMainMenuScreen();
             Start();
         }
 
-        public void Search() {
+        /// <summary>
+        /// This method searches for an existing recipe chosen by the user.
+        /// </summary>
+        public void Search()
+        {
+            //Displays the user interface for the search method.
             display.SearchCmdDisplay();
+
+            //Assigning variables.
             string name = null;
             bool continueInput = true;
             int validator = 0;
 
-            while (continueInput == true) {
+            //Until the user enters a valid recipe name, the loop keeps checking the input.
+            while (continueInput == true)
+            {
+                //Assigning the user input to the 'name' string.
                 name = display.GetRecipeName();
-                if (validator == 1) {
+
+                //If the entered recipe doesn't exist in the database a corresponding message is assigned to the 'result' string.
+                if (validator == 1)
+                {
                     result = "No such recipe in database!";
                 }
+
+                //If the entered recipe has no elements or it's empty a corresponding message is assigned to the 'result' string.
                 else if (validator == -1) {
                     result = "Name cannot be empty!";
                 }
+
+                //If the entered recipe exists in the database a corresponding message is assigned to the 'result' string and the loop stops.
                 else if (validator == 0) {
                     result = "Our turtles are searching in the database";
                     continueInput = false;
                 }
+
+                //Displays the message from the 'result' string.
                 display.PrintResult(result);
             }
 
+            //Assigning an object Recipe with an existing recipe in database.
             Recipe recipe = recipeContext.Recipes.Single(x => x.Name == name);
 
+            //Displaying the features of the recipe(name, rating, ingredients, description).
             result = RecipeOutput(recipe);
             display.DisplayRecipe(result);
-
+            
+            //Allows the user to return to the main menu of the program.
             display.ReturnToMainMenuScreen();
             Start();
 
         }
 
-        public void Update() {
+        /// <summary>
+        /// This method updates an existing recipe 
+        /// </summary>
+        public void Update()
+        {
+            //Assigning variables.
             string recipeName = null;
             string[] options = { "ingredients", "name", "description" };
             string choice = null;
@@ -419,7 +629,8 @@ namespace CookBook {
 
             display.UpdateCmdDisplay();
 
-            do //Validation
+            //Validates if the recipe name entered by the user is valid.
+            do 
             {
                 recipeName = display.GetRecipeName().ToLower();
 
@@ -439,10 +650,15 @@ namespace CookBook {
 
             } while (validator != 0);
 
-            Recipe recipe = recipeContext.Recipes.Single(x => x.Name == recipeName); // Gets the whole recipe from database
-            display.PrintResult(RecipeOutput(recipe)); //Shows what the recipe contains
-            display.PrintResult("\nWhat do you want to update?"); //Asking what to update
-            while (!options.Contains(choice)) //Validates if the input is either ingredients, name or description
+            //Gets the whole recipe from database.
+            Recipe recipe = recipeContext.Recipes.Single(x => x.Name == recipeName); 
+            //Shows what the recipe contains.
+            display.PrintResult(RecipeOutput(recipe)); 
+            //Asking what to update.
+            display.PrintResult("\nWhat do you want to update?"); 
+
+            //Validates if the input is either ingredients, name or description.
+            while (!options.Contains(choice)) 
             {
                 choice = Console.ReadLine().ToLower();
                 if (options.Contains(choice)) {
@@ -450,7 +666,6 @@ namespace CookBook {
                 }
                 display.PrintResult("Invalid input!");
             }
-
             switch (choice) {
                 case "name":
                     UpdateRecipeName(recipe);
@@ -463,24 +678,40 @@ namespace CookBook {
                     break;
             }
 
+            //Allows the user to return to the main menu.
             display.ReturnToMainMenuScreen();
             Start();
 
         }
 
+        /// <summary>
+        /// This method updates the name of an existing recipe.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateRecipeName(Recipe recipe) 
         {
+            //Entering a new name
             string NewRecipeName = RecipeRead();
+            //Assigning the new name to the Recipe Name property.
             recipe.Name = NewRecipeName;
+            //Updates the recipe name in the database.
             recipeContext.Recipes.Update(recipe);
+            //Saves changes in databases so the update is not lost.
             recipeContext.SaveChanges();
         }
 
+        /// <summary>
+        /// This method updates the ingredients of an existing recipe.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateIngredients(Recipe recipe)
         {
+            //Displaying the user interface for the update ingredients.
             string command = display.UpdateIngredientsScreen();
+            //Assigning the recipe ingredients to a variable.
             string ingredients = recipe.Ingredients;
 
+            //Depending on the command a different method for update is called.
             switch (command) {
                 case "add":
                     UpdateIngredientsAdd(recipe);
@@ -494,7 +725,9 @@ namespace CookBook {
             }
         }
 
-        public void UpdateIngredientsEdit(Recipe recipe) {
+        public void UpdateIngredientsEdit(Recipe recipe)
+        {
+            //Assigning variables.
             var allIngredients = recipe.Ingredients.Split(";").ToArray();
             string[] ingredient = null;
             int index = 0;
@@ -504,13 +737,17 @@ namespace CookBook {
             string updatedIngredient = null;
             StringBuilder sb = new StringBuilder();
 
-            while (true) {
-                try {
+            //Until a valid ingredient index is entered the loop keeps checking
+            while (true)
+            {
+                try
+                {
                     index = display.GetIngredientIndex() - 1;
                     newQuantity = display.GetQuantity();
                     break;
                 }
-                catch {
+                catch
+                {
                     result = "Invalid input!";
                     display.PrintResult(result);
                 }
@@ -535,7 +772,7 @@ namespace CookBook {
             recipeContext.SaveChanges();
 
 
-        }
+        } //TODO
 
         public void UpdateIngredientsRemove(Recipe recipe) {
             var allIngredients = recipe.Ingredients.Split(";").ToArray();
@@ -564,7 +801,7 @@ namespace CookBook {
             recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
-        }
+        } //TODO
 
         public void UpdateIngredientsAdd(Recipe recipe) {
             string ingredients = IngredientsRead();
@@ -575,35 +812,52 @@ namespace CookBook {
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
 
-        }
+        } //TODO
 
         public void UpdateDescription(Recipe recipe) {
             string description = DescriptionRead();
             recipe.Description = description;
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
-        }
+        } //TODO
 
-        public string RecipeOutput(Recipe recipe) {
+        /// <summary>
+        /// This method displays all the features of an existing recipe
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
+        /// <returns>Returns all the features of an existing recipe transformed into a string.</returns>
+        public string RecipeOutput(Recipe recipe)
+        {
+            //Assigning variables
             string ingredients = null;
             string description = null;
+            StringBuilder sb = new StringBuilder();
 
+            //Assigning the properties of the chosen recipe to the variables.
             ingredients = recipe.Ingredients;
             description = recipe.Description;
-            StringBuilder sb = new StringBuilder();
+
+            //Calculating the calories for the recipe
             double rating = CalculateRating(recipe);
 
+            //Adding each feature of the recipe to the string builder
             sb.Append("\nName: " + recipe.Name + $"  Rating: {rating:F2}" + "\n" + "\nIngredients:\n");
             ingredients = IngredientsToPlainText(ingredients);
             sb.Append(ingredients + "\n");
-            description = recipe.Description;
+            sb.Append("Description:\n" + recipe.Description + $"\n\nCalories for this recipe are: {recipe.Calories:F2}");
 
-            sb.Append("Description:\n" + description + $"\n\nCalories for this recipe are: {recipe.Calories:F2}");
-
+            //Returning the transformed result of the StringBuilder
             return sb.ToString();
-        } //Tested
+        }
 
-        public double CalculateRating(Recipe recipe) {
+        /// <summary>
+        /// This method calculates the rating of an existing recipe.
+        /// If there's more than one rating for a single recipe the method calculates the average.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
+        /// <returns>Returns the average of ratings for a recipe chosen by the user.</returns>
+        public double CalculateRating(Recipe recipe)
+        {
             double rating = 0;
 
             var ratings = recipeContext.Ratings.Where(x => x.Recipe.Name == recipe.Name).ToArray();
@@ -611,15 +865,26 @@ namespace CookBook {
             rating /= ratings.Length;
             
             return rating;
-        } //Tested
+        }
 
-        public double CalculateCalories(string ingredients) {
+        /// <summary>
+        /// This method calculates the calories of an existing recipe.
+        /// </summary>
+        /// <param name="ingredients">Ingredients in the recipe.</param>
+        /// <returns>Returns the sum of the calories of all ingredients in the recipe.</returns>
+        public double CalculateCalories(string ingredients)
+        {
+            //Assigning variables.
             Ingredient checkIngredientInDatabase = new Ingredient();
             double calories = 0;
             int ingredientNameIndex = 0;
             int ingredientQuantityIndex = 1;
-            var allIngredients = ingredients.Split(";").ToArray(); //separates the ingredients
 
+            //Separates the ingredients.
+            var allIngredients = ingredients.Split(";").ToArray(); 
+
+            //For each ingredient in the recipe, its calories is taken and multiplied by its quantity in the recipe.
+            //After calclating for one ingredient the loop calculates for the rest as the already calculated calories are added in a sum variable 'calories'.
             foreach (var ingredient in allIngredients) {
                 var ingredientAndQuantity = ingredient.Split().ToArray();
                 string ingredientName = ingredientAndQuantity[ingredientNameIndex];
@@ -629,13 +894,23 @@ namespace CookBook {
                 calories += (checkIngredientInDatabase.Calories * ingredientQuantity) / 100;
             }
 
+            //Returning the total calories for the recipe.
             return calories;
-        } //Tested
+        }
 
-        public string IngredientsToPlainText(string ingredients) {
+        /// <summary>
+        /// This method takes the ingredients and puts them in a specific context of display.
+        /// </summary>
+        /// <param name="ingredients">Ingredients in the recipe.</param>
+        /// <returns>Returns the ingredients in a specific context of display.</returns>
+        public string IngredientsToPlainText(string ingredients)
+        {
+            //Assigning variables.
             List<string> allIngredients = ingredients.Split(";").ToList();
             StringBuilder sb = new StringBuilder();
             int i = 1;
+
+            //Each ingredient in the string 'ingredients' is put in a specific context using StringBuilder
             foreach (var ingredient in allIngredients) {
                 List<string> ingredientAndQuantity = ingredient.Split().ToList();
                 sb.Append(i + " " + ingredientAndQuantity[0] + " " + ingredientAndQuantity[1] + " ");
@@ -648,45 +923,63 @@ namespace CookBook {
                 i++;
 
             }
-            string ingredientsInPLainText = sb.ToString();
 
-            return ingredientsInPLainText;
-        } //Tested
+            //Returns the specific context from the StringBuilder as a string.
+            return sb.ToString();
+        }
 
-        public void Top5() {
+        /// <summary>
+        /// This method shows the top five recipes with sorted by rating.
+        /// </summary>
+        public void Top5()
+        {
+            //Assigning the variables.
             var recipes = recipeContext.Recipes;
             StringBuilder sb = new StringBuilder();
             Dictionary<string, double> recipesAndRating = new Dictionary<string, double>();
 
+            //Every recipe in the table Recipes in the database has its rating calculated and added to the dictionary.
             foreach (var recipe in recipes) {
                 string recipeName = recipe.Name;
                 double rating = CalculateRating(recipe);
                 recipesAndRating.Add(recipeName, rating);
             }
 
+            //The dictionary is ordered by descending to the best 5 rating recipes are shown.
             recipesAndRating = recipesAndRating.OrderByDescending(x => x.Value).Take(5).ToDictionary(x => x.Key, x => x.Value);
 
+            //Displaying the top 5 recipes in the dictionary.
             foreach (var recipe in recipesAndRating) {
                 string recipeName = recipe.Key;
                 double rating = recipe.Value;
                 sb.Append("- " + recipeName + ", Rating: " + rating + Environment.NewLine);
             }
             display.DisplayTop5(sb.ToString());
+
+            //Allows the user to return to the main menu.
             display.ReturnToMainMenuScreen();
             Start();
         }
 
-        public void ShowAll() {
+        /// <summary>
+        /// This method shows all the recipes in the database.
+        /// </summary>
+        public void ShowAll()
+        {
+            //Assigning variables.
             var allRecipes = recipeContext.Recipes.ToArray();
             StringBuilder output = new StringBuilder();
             int counter = 1;
 
+            //Displays all recipes in the database.
             foreach (var recipe in allRecipes) {
                 string recipeName = recipe.Name;
                 output.Append(counter + ". " + recipeName + Environment.NewLine);
                 counter++;
             }
             display.DisplayAllRecipes(output.ToString());
+
+            //Allows the user to return to the main menu.
             display.ReturnToMainMenuScreen();
             Start();
         }

@@ -31,17 +31,9 @@ namespace CookBook {
         }
 
         public string GetCommand() {
-            string[] commands = { "add", "delete", "search", "exit", "rate", "update", "top 5", "show all" };
             Console.Write("\nChoose an option: ");
-            var choice = Console.ReadLine().ToLower();
-            while (!commands.Contains(choice.Trim())) {
-                Console.WriteLine("Choice not valid!");
-                Console.Write("\nChoose an option: ");
-                choice = Console.ReadLine().ToLower();
-            }
-            if (choice == "exit") {
-                Environment.Exit(0);
-            }
+            var choice = Console.ReadLine().ToLower().Trim();
+            choice = string.Join(" ", choice.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
             return choice;
         }
 
@@ -113,7 +105,7 @@ namespace CookBook {
         public string GetRecipeName() {
             Console.Write("\nName: ");
 
-            string RecipeName = Console.ReadLine();
+            string RecipeName = Console.ReadLine().Trim();
 
             return RecipeName;
         }

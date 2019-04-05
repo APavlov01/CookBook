@@ -15,10 +15,8 @@ namespace CookBook {
             for (int i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Welcome to CookBook!");
             for (int i = 0; i < 120; i++) Console.Write("-");
             Console.WriteLine("\nAbout:");
-            Console.WriteLine("- With this program you can add, delete, search, update recipes.");
+            Console.WriteLine("- With this program you can add, delete, search, update, rate recipes.");
             Console.WriteLine("- Each recipe contains of name, ingredients and description.");
-            Console.WriteLine("- You can search a recipe by simply typing its name.");
-            Console.WriteLine("- You can delete the recipe by simply typing its name in the delete section.");
             Console.WriteLine("\nMenu:");
             Console.WriteLine("- Add");
             Console.WriteLine("- Delete");

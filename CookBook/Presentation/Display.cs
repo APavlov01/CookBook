@@ -34,7 +34,7 @@ namespace CookBook {
             string[] commands = { "add", "delete", "search", "exit", "rate", "update", "top 5", "show all" };
             Console.Write("\nChoose an option: ");
             var choice = Console.ReadLine().ToLower();
-            while (!commands.Contains(choice)) {
+            while (!commands.Contains(choice.Trim())) {
                 Console.WriteLine("Choice not valid!");
                 Console.Write("\nChoose an option: ");
                 choice = Console.ReadLine().ToLower();
@@ -134,9 +134,9 @@ namespace CookBook {
             return description;
         }
 
-        public int GetRating() {
+        public string GetRating() {
             Console.Write("Enter rating between 0 and 5: ");
-            int rating = int.Parse(Console.ReadLine());
+            string rating = Console.ReadLine();
             return rating;
         }
 
@@ -158,15 +158,15 @@ namespace CookBook {
             return input;
         }
 
-        public int GetIngredientIndex() {
+        public string GetIngredientIndex() {
             Console.WriteLine("Which ingredient do you want to edit? (enter a number): ");
-            int index = int.Parse(Console.ReadLine());
+            string index = Console.ReadLine();
             return index;
         }
 
-        public int GetQuantity() {
-            Console.WriteLine("Enter new quantity: ");
-            int quantity = int.Parse(Console.ReadLine());
+        public string GetQuantity() {
+            Console.Write("Enter new quantity: ");
+            string quantity =Console.ReadLine();
             return quantity;
         }
 

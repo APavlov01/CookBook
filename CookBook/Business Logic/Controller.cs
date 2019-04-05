@@ -118,8 +118,21 @@ namespace CookBook {
             do //Until the user enters a valid recipe name the loop keeps checking the input
             {
                 recipeName = display.GetRecipeName().ToLower(); //Assigning the user input to the variable 'recipeName'
+                escapeToMain(recipeName);
                 if (ValidateRecipeName(recipeName) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
                 {
+                    List<string> spaceDeleter = recipeName.Trim().Split().ToList();
+                    spaceDeleter.RemoveAll(x => x=="");
+                    recipeName = "";
+                    for (int i = 0; i < spaceDeleter.Count; i++)
+                    {
+                        recipeName += spaceDeleter[i];
+                        if (i==spaceDeleter.Count-1)
+                        {
+                            break;
+                        }
+                        recipeName += " ";
+                    }
                     recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
 
@@ -143,7 +156,7 @@ namespace CookBook {
                 display.PrintResult(result); //Displaying the message assigned to the 'result' string in the console.
 
             } while (ValidateRecipeName(recipeName) != 1);
-
+            
             return recipeName; //Returns the valid recipe name.
         }
 
@@ -164,7 +177,9 @@ namespace CookBook {
             while (true) //Until the user enters valid ingredients the loop keeps checking the input.
             {
 
-                ingredientArgs = display.GetIngredients().ToLower(); // Assigning the user input to the 'ingredientArgs' string.
+                ingredientArgs = display.GetIngredients().ToLower().Trim(); // Assigning the user input to the 'ingredientArgs' string.
+                escapeToMain(ingredientArgs);
+
                 if (ingredientCount == 0 && ingredientArgs.Equals("end")) //If the user hasn't entered any ingredints and types 'end' a corresponding message is displayed for the invalid input!
                 {
                     result = "Please enter atleast one ingredient.";
@@ -180,6 +195,19 @@ namespace CookBook {
                     {
                         result = "Successfuly added ingredient!\n";
                         ingredientCount++;
+                        List<string> spaceDeleter = ingredientArgs.Trim().Split().ToList();
+                        spaceDeleter.RemoveAll(x => x == "");
+                        ingredientArgs = "";
+                        for (int i = 0; i < spaceDeleter.Count; i++)
+                        {
+                            ingredientArgs += spaceDeleter[i];
+                            if (i == spaceDeleter.Count - 1)
+                            {
+                                break;
+                            }
+                            ingredientArgs += " ";
+                        }
+
                         ingredientsToParse.Add(ingredientArgs);
                     }
 
@@ -213,7 +241,7 @@ namespace CookBook {
         /// <summary>
         /// Transforming the list of strings 'ingredientsArgs' to a single string.
         /// </summary>
-        /// <param name="ingredientArgs">A list of ingredients.</param>
+        /// <param name="ingredientArgs">A list of ingredients and their quantity.</param>
         /// <returns>Returns the parsed ingredients.</returns>
         public string IngredientParse(List<string> ingredientArgs)
         {
@@ -263,6 +291,7 @@ namespace CookBook {
             {
                 //Assigning the user input to the 'paragraph' string. 
                 string paragraph = display.GetDescription();
+                escapeToMain(paragraph);
 
                 validator = ValidateDescription(paragraph, paragraphCount);
 
@@ -328,47 +357,64 @@ namespace CookBook {
         {
             //Assigning variables
             List<string> ingredientArguments = ingredient.Split().ToList();
+            if (ingredientArguments[0] == "")
+            {
+                return 0;
+            }
+            ingredientArguments.RemoveAll(x => x == "");
+            ingredientArguments.RemoveAll(x => x == " ");
             StringBuilder sb = new StringBuilder();
             int argumentCount = ingredientArguments.Count - 1;
-
-            //Separates the words in the ingredient name by adding '-' between them.
-            for (int i = 0; i < argumentCount; i++)
-            {
-                sb.Append(ingredientArguments[i]); 
-                if (i == argumentCount - 1) {
-                    break;
-                }
-                sb.Append("-");
-            }
-
             //Assigning the table 'Ingredients' from database to the variable 'check' transforming it to a list.
             var check = recipeContext.Ingredients.ToList();
 
+
+            //Separates the words in the ingredient name by adding '-' between them.
+            sb.Append(ingredientArguments[0]);
+           
+            for (int i = 1; i < argumentCount; i++)
+            {
+                sb.Append("-");
+                sb.Append(ingredientArguments[i]);
+            }
             //If the ingredient doesn't exist in the table 'Ingredients' in database the method returns 0;
             try
             {
                 check.Single(x => x.Name.ToLower() == sb.ToString().ToLower());
+                //If the ingredient quantity is invalid returns -1;
+                try
+                {
+                    double.Parse(ingredientArguments[argumentCount]);
+
+                }
+                catch
+                {
+                   
+                    return -1;
+                }
+
+                //If the ingredient quantity is negative number returns -1;
+                if (double.Parse(ingredientArguments[argumentCount]) <= 0)
+                {
+                    return -1;
+                }
             }
             catch
             {
+                sb.Append("-" + ingredientArguments[argumentCount]);
+                try
+                {
+                    check.Single(x => x.Name.ToLower() == sb.ToString().ToLower());
+                    return -1;
+                }
+                catch
+                {
+                }
                 return 0;
             }
+            
+          
 
-            //If the ingredient quantity is invalid returns -1;
-            try
-            {
-                double.Parse(ingredientArguments[argumentCount]);
-            }
-            catch
-            {
-                return -1;
-            }
-
-            //If the ingredient quantity is negative number returns -1;
-            if (double.Parse(ingredientArguments[argumentCount]) <= 0)
-            {
-                return -1;
-            }
 
             //After the validation the ingredient is accepted as valid and the method returns 1;
             return 1;
@@ -426,8 +472,8 @@ namespace CookBook {
             //Until the user enters a valid recipe the loop keeps checking the input.
             do
             {
-                recipeName = display.GetRecipeName().ToLower();
-
+                recipeName = display.GetRecipeName().Trim().ToLower();
+                escapeToMain(recipeName);
                 validator = ValidateRecipeName(recipeName);
 
                 //If the recipe name entered by the user exists in the database, a corresponding message is assigned to the 'result' string and the loop stops.
@@ -459,8 +505,9 @@ namespace CookBook {
             {
                 try
                 {
-                    rating = display.GetRating();
-
+                    string inputRating = display.GetRating().Trim();
+                    escapeToMain(inputRating);
+                    rating = int.Parse(inputRating);
                     //If the rating in less than 0 and more than 5 a corresponding message is assigned to the 'result'.
                     if (rating < 0 || rating > 5)
                     {
@@ -523,7 +570,8 @@ namespace CookBook {
             while (ValidateRecipeName(recipeName) != 0)
             {
                 //Assigning the user input to the 'recipeName' string.
-                recipeName = display.GetRecipeName().ToLower();
+                recipeName = display.GetRecipeName().Trim().ToLower();
+                escapeToMain(recipeName);
 
                 validator = ValidateRecipeName(recipeName);
                 
@@ -550,14 +598,18 @@ namespace CookBook {
                 display.PrintResult(result);
 
             }
-
+            
+                
+            
             //Assigning the valid name to a Recipe property.
             recipe.Name = recipeName;
+            
+            recipeContext.RemoveRange(recipeContext.Ratings.Where(x => x.Recipe.Name == recipe.Name));
             //Deleting the recipe from the database.
             recipeContext.Remove(recipeContext.Recipes.Single(x => x.Name == recipe.Name));
             //Saving changes to the database.
             recipeContext.SaveChanges();
-
+            display.PrintResult(result);
             //Allows the user to return to the main menu of the program.
             display.ReturnToMainMenuScreen();
             Start();
@@ -580,8 +632,9 @@ namespace CookBook {
             while (continueInput == true)
             {
                 //Assigning the user input to the 'name' string.
-                name = display.GetRecipeName();
-
+                name = display.GetRecipeName().Trim();
+                escapeToMain(name);
+                validator = ValidateRecipeName(name);
                 //If the entered recipe doesn't exist in the database a corresponding message is assigned to the 'result' string.
                 if (validator == 1)
                 {
@@ -632,7 +685,8 @@ namespace CookBook {
             //Validates if the recipe name entered by the user is valid.
             do 
             {
-                recipeName = display.GetRecipeName().ToLower();
+                recipeName = display.GetRecipeName().ToLower().Trim();
+                escapeToMain(recipeName);
 
                 validator = ValidateRecipeName(recipeName);
 
@@ -660,8 +714,10 @@ namespace CookBook {
             //Validates if the input is either ingredients, name or description.
             while (!options.Contains(choice)) 
             {
-                choice = Console.ReadLine().ToLower();
-                if (options.Contains(choice)) {
+                choice = Console.ReadLine().ToLower().Trim();
+                escapeToMain(choice);
+                if (options.Contains(choice))
+                {
                     break;
                 }
                 display.PrintResult("Invalid input!");
@@ -708,11 +764,12 @@ namespace CookBook {
         {
             //Displaying the user interface for the update ingredients.
             string command = display.UpdateIngredientsScreen();
+            escapeToMain(command);
             //Assigning the recipe ingredients to a variable.
             string ingredients = recipe.Ingredients;
 
             //Depending on the command a different method for update is called.
-            switch (command) {
+            switch (command.ToLower().Trim()) {
                 case "add":
                     UpdateIngredientsAdd(recipe);
                     break;
@@ -731,7 +788,6 @@ namespace CookBook {
             var allIngredients = recipe.Ingredients.Split(";").ToArray();
             string[] ingredient = null;
             int index = 0;
-            int newQuantity = 0;
             int ingredientNameIndex = 0;
             int ingredientQuantityIndex = 1;
             string updatedIngredient = null;
@@ -742,21 +798,38 @@ namespace CookBook {
             {
                 try
                 {
-                    index = display.GetIngredientIndex() - 1;
-                    newQuantity = display.GetQuantity();
-                    break;
+                    string inputIndex = display.GetIngredientIndex().Trim();
+                    escapeToMain(inputIndex);
+
+                    index =  int.Parse(inputIndex) - 1;
+                    if (index < allIngredients.Count() && index >= 0 )
+                    {
+                        ingredient = allIngredients[index].Split();
+                        ingredient[ingredientQuantityIndex] = display.GetQuantity().Trim();
+                        escapeToMain(ingredient[1]);
+                        string check = ingredient[0] + " " + ingredient[1];
+                        while (ValidateIngredients(check)!=1)
+                        {
+                            result = "Invalid quantity!";
+                            display.PrintResult(result);
+                            ingredient[ingredientQuantityIndex] = display.GetQuantity();
+                            check = ingredient[0] + " " + ingredient[1];
+                            if (ValidateIngredients(check) == 1)
+                            {
+                                result = "Updating database";
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
                 catch
                 {
-                    result = "Invalid input!";
-                    display.PrintResult(result);
                 }
+                result = "Invalid input!";
+                display.PrintResult(result);
             }
-
-            ingredient = allIngredients[index].Split();
-            ingredient[ingredientQuantityIndex] = newQuantity.ToString();
             updatedIngredient = ingredient[ingredientNameIndex] + " " + ingredient[ingredientQuantityIndex];
-
             for (int i = 0; i < allIngredients.Length; i++) {
                 if (i == index) {
                     sb.Append(updatedIngredient);
@@ -769,6 +842,8 @@ namespace CookBook {
             recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
             recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
+            result = $"Ingredient {ingredient[ingredientNameIndex]}`s quantity has been updated!";
+            display.PrintResult(result);
             recipeContext.SaveChanges();
 
 
@@ -782,13 +857,17 @@ namespace CookBook {
             display.PrintResult(result);
             while (true) {
                 try {
-                    index = display.GetIngredientIndex() - 1;
-                    break;
+                    string inputIndex = display.GetIngredientIndex().Trim();
+                    escapeToMain(inputIndex);
+                    index = int.Parse(inputIndex) - 1;
+                    if (index < allIngredients.Count() && index >= 0)
+                    {
+                        break;
+                    }
                 }
-                catch {
-                    result = "Invalid input!";
-                    display.PrintResult(result);
-                }
+                catch {}
+                result = "Invalid input!";
+                display.PrintResult(result);
             }
             for (int i = 0; i < allIngredients.Length; i++) {
                 if (i == index) {
@@ -983,5 +1062,16 @@ namespace CookBook {
             display.ReturnToMainMenuScreen();
             Start();
         }
+        private void escapeToMain(string command)
+        {
+            if (command == "escape")
+            {
+                result = "Process terminated.";
+                display.PrintResult(result);
+                display.ReturnToMainMenuScreen();
+                Start();
+            }
+        }
     }
+    
 }

@@ -8,7 +8,10 @@ using CookBook.Data;
 
 namespace CookBook
 {
-    class StartUp
+    /// <summary>
+    /// This class is used to start the program.
+    /// </summary>
+    public class StartUp
     { 
         public static void Main(string[] args)
         {

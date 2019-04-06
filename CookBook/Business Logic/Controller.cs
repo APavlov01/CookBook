@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CookBook {
 
+    /// <summary>
+    /// This class conatins all the logic used in the application.
+    /// </summary>
     public class Controller
     {
         /// <summary>
@@ -42,10 +45,10 @@ namespace CookBook {
         /// </summary>
         public void Start() {
             display.WelcomeScreen(); //Calls a function from Display class which displays the user interface for the Main menu.
-             //Assigns the value of the user input to the command variable.
+            //Until the user enters a valid command the loop keeps checking.
             while (true)
             {
-
+                //Assigns the value of the user input to the command variable.
                 command = display.GetCommand();
                 switch (command)
                 {
@@ -70,14 +73,13 @@ namespace CookBook {
                     case "show all": //If the command 'show all' is entered by the user the function ShowAll() is called.
                         ShowAll();
                         break;
-                    case "exit":
+                    case "exit": //If the command 'exit' is entered by the user the program closes.
                         Environment.Exit(0);
                         break;
                 
-                default:
+                    default: //If none of the commands above are entered, a corresponding message is assigned to the 'result' string and displayed.
                         result = "Invalid option. Enter new command";
                         display.PrintResult(result);
-
                         break;
 
                 }
@@ -124,7 +126,7 @@ namespace CookBook {
         /// This method reads the recipe name entered by the user and checks if the name is valid in various ways.
         /// </summary>
         /// <returns>Returns the name of the recipe entered by the user when it's a valid name</returns>
-        private string RecipeRead()
+        public string RecipeRead()
         {
             //Assigning variables
             string recipeName = null;
@@ -136,8 +138,10 @@ namespace CookBook {
                 
                 if (ValidateRecipeName(recipeName) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
                 {
+                    //If the input by the user contains any additional spaces, they are removed.
                     recipeName= string.Join(" ", recipeName.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
-                    escapeToMain(recipeName.ToLower());
+                    //If the user enters an escape command whenever, he is returned to the main menu.
+                    EscapeToMain(recipeName.ToLower());
                     recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
 
@@ -183,7 +187,7 @@ namespace CookBook {
             {
 
                 ingredientArgs = display.GetIngredients().ToLower().Trim(); // Assigning the user input to the 'ingredientArgs' string.
-                escapeToMain(ingredientArgs);
+                EscapeToMain(ingredientArgs);
 
                 if (ingredientCount == 0 && ingredientArgs.Equals("end")) //If the user hasn't entered any ingredints and types 'end' a corresponding message is displayed for the invalid input!
                 {
@@ -200,7 +204,8 @@ namespace CookBook {
                     {
                         result = "Successfuly added ingredient!\n";
                         ingredientCount++;
-                        ingredientArgs= string.Join(" ", ingredientArgs.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+                        //If the input by the user contains any additional spaces, they are removed.
+                        ingredientArgs = string.Join(" ", ingredientArgs.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
                         ingredientsToParse.Add(ingredientArgs);
                     }
 
@@ -284,7 +289,7 @@ namespace CookBook {
             {
                 //Assigning the user input to the 'paragraph' string. 
                 string paragraph = display.GetDescription();
-                escapeToMain(paragraph.Trim().ToLower());
+                EscapeToMain(paragraph.Trim().ToLower());
 
                 validator = ValidateDescription(paragraph, paragraphCount);
 
@@ -466,7 +471,7 @@ namespace CookBook {
             do
             {
                 recipeName = display.GetRecipeName().Trim().ToLower();
-                escapeToMain(recipeName);
+                EscapeToMain(recipeName);
                 validator = ValidateRecipeName(recipeName);
 
                 //If the recipe name entered by the user exists in the database, a corresponding message is assigned to the 'result' string and the loop stops.
@@ -499,7 +504,7 @@ namespace CookBook {
                 try
                 {
                     string inputRating = display.GetRating().Trim();
-                    escapeToMain(inputRating.ToLower());
+                    EscapeToMain(inputRating.ToLower());
                     rating = int.Parse(inputRating);
                     //If the rating in less than 0 and more than 5 a corresponding message is assigned to the 'result'.
                     if (rating < 0 || rating > 5)
@@ -564,10 +569,11 @@ namespace CookBook {
             {
                 //Assigning the user input to the 'recipeName' string.
                 recipeName = display.GetRecipeName().Trim().ToLower();
-                escapeToMain(recipeName);
+                EscapeToMain(recipeName);
                 if (ValidateRecipeName(recipeName) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
                 {
-                    recipeName= string.Join(" ", recipeName.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+                    //If the input by the user contains any additional spaces, they are removed.
+                    recipeName = string.Join(" ", recipeName.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
                     recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
                 validator = ValidateRecipeName(recipeName);
@@ -630,9 +636,10 @@ namespace CookBook {
             {
                 //Assigning the user input to the 'name' string.
                 name = display.GetRecipeName().Trim().ToLower();
-                escapeToMain(name);
+                EscapeToMain(name);
                 if (ValidateRecipeName(name) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
                 {
+                    //If the input by the user contains any additional spaces, they are removed.
                     name = string.Join(" ", name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
                     name = name.First().ToString().ToUpper() + name.Substring(1);
                 }
@@ -688,9 +695,11 @@ namespace CookBook {
             do 
             {
                 recipeName = display.GetRecipeName().ToLower().Trim();
-                escapeToMain(recipeName);
+                //If the 'escape' command is entered whenever , the user is returned to the main menu and the process is terminated.
+                EscapeToMain(recipeName);
                 if (ValidateRecipeName(recipeName) != -1) //If the entered recipe name is not empty the first letter of the recipe name is made capital letter.
                 {
+                    //If the input by the user contains any additional spaces, they are removed.s
                     recipeName = string.Join(" ", recipeName.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
                     recipeName = recipeName.First().ToString().ToUpper() + recipeName.Substring(1);
                 }
@@ -721,7 +730,7 @@ namespace CookBook {
             while (!options.Contains(choice)) 
             {
                 choice = Console.ReadLine().ToLower().Trim();
-                escapeToMain(choice);
+                EscapeToMain(choice);
                 if (options.Contains(choice))
                 {
                     break;
@@ -770,7 +779,7 @@ namespace CookBook {
         {
             //Displaying the user interface for the update ingredients.
             string command = display.UpdateIngredientsScreen().Trim().ToLower();
-            escapeToMain(command);
+            EscapeToMain(command);
             //Assigning the recipe ingredients to a variable.
             string ingredients = recipe.Ingredients;
 
@@ -788,6 +797,10 @@ namespace CookBook {
             }
         }
 
+        /// <summary>
+        /// This method updates the ingredients by editing a specific ingredient chosen by the user.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateIngredientsEdit(Recipe recipe)
         {
             //Assigning variables.
@@ -805,15 +818,17 @@ namespace CookBook {
                 try
                 {
                     string inputIndex = display.GetIngredientIndex().Trim();
-                    escapeToMain(inputIndex.ToLower());
+                    EscapeToMain(inputIndex.ToLower());
 
                     index =  int.Parse(inputIndex) - 1;
+                    //Check if the index entered is in the range.
                     if (index < allIngredients.Count() && index >= 0 )
                     {
                         ingredient = allIngredients[index].Split();
                         ingredient[ingredientQuantityIndex] = display.GetQuantity().Trim();
-                        escapeToMain(ingredient[1].ToLower());
+                        EscapeToMain(ingredient[1].ToLower());
                         string check = ingredient[0] + " " + ingredient[1];
+                        //Until a valid quantity is entered the loop keeps checking.
                         while (ValidateIngredients(check)!=1)
                         {
                             result = "Invalid quantity!";
@@ -835,6 +850,7 @@ namespace CookBook {
                 result = "Invalid input!";
                 display.PrintResult(result);
             }
+            //Variable keeping the information for the new ingredient
             updatedIngredient = ingredient[ingredientNameIndex] + " " + ingredient[ingredientQuantityIndex];
             for (int i = 0; i < allIngredients.Length; i++) {
                 if (i == index) {
@@ -853,23 +869,30 @@ namespace CookBook {
             recipeContext.SaveChanges();
 
 
-        } //TODO
+        }
 
+        /// <summary>
+        /// This method updates the ingredients by removing a specific ingredient chosen by the user.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateIngredientsRemove(Recipe recipe) {
+            //Assigning the variables
             var allIngredients = recipe.Ingredients.Split(";").ToArray();
             StringBuilder sb = new StringBuilder();
             int index = 0;
+            //If the recipe has only one ingredient the user cannot delete it, because a recipe cannot have zero ingredients.
             if (allIngredients.Length==1)
             {
                 result = "You cannot delete ingredients because there is only one!";
                 display.PrintResult(result);
                 UpdateIngredients(recipe);
             }
+            //Otherwise if the recipe has more than one ingredient, the user is allowed to remove.
             while (true) {
                 try {
                     string inputIndex = display.GetIngredientIndex().Trim();
                     
-                    escapeToMain(inputIndex.ToLower());
+                    EscapeToMain(inputIndex.ToLower());
                     index = int.Parse(inputIndex) - 1;
                     if (index < allIngredients.Count() && index >= 0)
                     {
@@ -887,7 +910,7 @@ namespace CookBook {
                 }
                 sb.Append(allIngredients[i] + ";");
             }
-
+            //Saving changes to the database.
             recipe.Ingredients = sb.ToString().Remove(sb.Length - 1);
             recipe.Calories = CalculateCalories(recipe.Ingredients);
             recipeContext.Recipes.Update(recipe);
@@ -895,8 +918,12 @@ namespace CookBook {
 
             result = $"Ingredient was removed.";
             display.PrintResult(result);
-        } //TODO
+        }
 
+        /// <summary>
+        /// This method updates the ingredients by removing a specific ingredient chosen by the user.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateIngredientsAdd(Recipe recipe)
         {
             string ingredients = IngredientsRead();
@@ -907,14 +934,18 @@ namespace CookBook {
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
 
-        } //TODO
+        }
 
+        /// <summary>
+        /// This method updates the description of an existing recipe chosen by the user.
+        /// </summary>
+        /// <param name="recipe">The recipe chosen by the user.</param>
         public void UpdateDescription(Recipe recipe) {
             string description = DescriptionRead();
             recipe.Description = description;
             recipeContext.Recipes.Update(recipe);
             recipeContext.SaveChanges();
-        } //TODO
+        }
 
         /// <summary>
         /// This method displays all the features of an existing recipe
@@ -1078,7 +1109,12 @@ namespace CookBook {
             display.ReturnToMainMenuScreen();
             Start();
         }
-        private void escapeToMain(string command)
+
+        /// <summary>
+        /// This method allows the user to terminate any process he is in and return to the main menu.
+        /// </summary>
+        /// <param name="command">The command entered by the user.</param>
+        private void EscapeToMain(string command)
         {
             if (command == "escape")
             {

@@ -8,15 +8,15 @@ using CookBook;
 
 namespace Tests
 {
+    /// <summary>
+    /// This class contains all the tests for the controller methods.
+    /// </summary>
     [TestFixture]
     public class ControllerTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        //Tests for all cases in ValidateRecipeName function in Controller
+        /// <summary>
+        /// Test if the recipe name is not in the database.
+        /// </summary>
         [Test]
         public void ValidateRecipeNameTestNotInDataBase()
         {
@@ -25,6 +25,9 @@ namespace Tests
             var expectedresult = 1;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the recipe name is empty.
+        /// </summary>
         [Test]
         public void ValidateRecipeNameTestEmpty()
         {
@@ -33,6 +36,9 @@ namespace Tests
             var expectedresult = -1;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the recipe name is in the database.
+        /// </summary>
         [Test]
         public void ValidateRecipeNameTestContainsInDatabase()
         {
@@ -43,7 +49,9 @@ namespace Tests
         }
 
 
-        //Tests for all cases in ValidateDescription function in Controller
+        /// <summary>
+        /// Test if the recipe description is empty.
+        /// </summary>
         [Test]
         public void ValidateDescriptionTestEmpty()
         {
@@ -52,6 +60,9 @@ namespace Tests
             var expectedresult = -1;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the recipe description starts invalid.
+        /// </summary>
         [Test]
         public void ValidateDescriptionTestStartsInvalid()
         {
@@ -60,6 +71,9 @@ namespace Tests
             var expectedresult = 0;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the recipe description is valid
+        /// </summary>
         [Test]
         public void ValidateDescriptionTestValidInput()
         {
@@ -70,7 +84,9 @@ namespace Tests
         }
 
 
-        //Tests for all cases in ValidateIngredients function in Controller
+        /// <summary>
+        /// Test if the ingredient has invalid name.
+        /// </summary>
         [Test]
         public void ValidateIngredientsTestInvalidIngredient()
         {
@@ -79,6 +95,9 @@ namespace Tests
             var expectedresult = 0;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the ingredient has invalid quantity.
+        /// </summary>
         [Test]
         public void ValidateIngredientsTestInvalidQuantity()
         {
@@ -87,6 +106,9 @@ namespace Tests
             var expectedresult = -1;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the ingredient has invalid quantity.
+        /// </summary>
         [Test]
         public void ValidateIngredientsTestInvalidQuantity2()
         {
@@ -95,6 +117,9 @@ namespace Tests
             var expectedresult = -1;
             Assert.AreEqual(expectedresult, result);
         }
+        /// <summary>
+        /// Test if the ingredient has valid name and quantity.
+        /// </summary>
         [Test]
         public void ValidateIngredientsTestValid()
         {
@@ -105,7 +130,9 @@ namespace Tests
         }
 
 
-        //Tests for calculations
+        /// <summary>
+        /// Test if the calculating rating method works correctly.
+        /// </summary>
         [Test]
         public void CalculateRatingTest()
         {
@@ -118,6 +145,9 @@ namespace Tests
             Assert.AreEqual(expectedResult, result);
             
         }
+        /// <summary>
+        /// Test if the calculating calories method works correctly.
+        /// </summary>
         [Test]
         public void CalculateCaloriesTest()
         {
@@ -129,7 +159,9 @@ namespace Tests
         }
 
 
-        //Test if the ingredients transfer to plain text
+        /// <summary>
+        /// Test if the ingredients transfer to plain text.
+        /// </summary>
         [Test]
         public void IngredientsToPlainTextTest()
         {
@@ -140,8 +172,9 @@ namespace Tests
             Assert.AreEqual(expectedresult, result);
         }
 
-
-        //Test if the ingredients are in the format "<ingredient1-ingredient1substring> <quantity>;<ingredient2-ingredient2substring> <quantity>;..."
+        /// <summary>
+        /// Test if the ingredients are in the format "<ingredient1-ingredient1substring> <quantity>;<ingredient2-ingredient2substring> <quantity>;..."
+        /// </summary>
         [Test]
         public void IngredientsParsingTest()
         {
@@ -155,7 +188,9 @@ namespace Tests
         }
 
 
-        //Test if the recipe displays its features correctly
+        /// <summary>
+        /// Test if the recipe displays its features correctly.
+        /// </summary>
         [Test]
         public void RecipeOutputTest()
         {

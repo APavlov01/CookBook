@@ -1014,7 +1014,7 @@ namespace CookBook {
             foreach (var ingredient in allIngredients) {
                 var ingredientAndQuantity = ingredient.Split().ToArray();
                 string ingredientName = ingredientAndQuantity[ingredientNameIndex];
-                int ingredientQuantity = int.Parse(ingredientAndQuantity[ingredientQuantityIndex]);
+                double ingredientQuantity = double.Parse(ingredientAndQuantity[ingredientQuantityIndex]);
 
                 checkIngredientInDatabase = recipeContext.Ingredients.Single(x => x.Name == ingredientName);
                 calories += (checkIngredientInDatabase.Calories * ingredientQuantity) / 100;

@@ -68,6 +68,8 @@ insert into Ingredients (Name, Type, Calories) values ('honey', 'g', '304');
 insert into Ingredients (Name, Type, Calories) values ('eggplant', 'g', '24');
 insert into Ingredients (Name, Type, Calories) values ('broccoli', 'g', '34');
 insert into Ingredients (Name, Type, Calories) values ('asparagus', 'g', '20');
+insert into Ingredients (Name, Type, Calories) values ('egg', 'g', '155');
+insert into Ingredients (Name, Type, Calories) values ('vinegar', 'ml', '18.2');
 
 
 

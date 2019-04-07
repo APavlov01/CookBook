@@ -23,9 +23,9 @@ namespace CookBook
         /// This method displays the user interface for the main menu of the program.
         /// </summary>
         public void WelcomeScreen() {
-            for (int i = 0; i < 120; i++) Console.Write("-");
+            for (int i = 0; i < 122; i++) Console.Write("-");
             for (int i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Welcome to CookBook!");
-            for (int i = 0; i < 120; i++) Console.Write("-");
+            for (int i = 0; i < 122; i++) Console.Write("-");
             Console.WriteLine("\nAbout:");
             Console.WriteLine("- With this program you can add, delete, search, update, rate recipes.");
             Console.WriteLine("- Each recipe contains of name, ingredients and description.");
@@ -61,10 +61,10 @@ namespace CookBook
             Console.Clear();
 
             int i = 0;
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Rate a recipe");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- Add a rating to a recipe by typing its name below");
             Console.WriteLine("- You can only rate an existing recipe once or multiple times");
             Console.WriteLine("- If you rate a recipe multiple times, the rating of the recipe will be averaged");
@@ -77,10 +77,10 @@ namespace CookBook
             Console.Clear();
 
             int i = 0;
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Delete a recipe");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- Enter the recipe name you want to delete below!");
             Console.WriteLine("- You can only delete an existing recipe");
         }
@@ -92,10 +92,10 @@ namespace CookBook
             Console.Clear();
 
             int i = 0;
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Search for a recipe");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- You can search for a recipe by simply typing its name below");
             Console.WriteLine("- You can only search for an existing recipe");
         }
@@ -107,10 +107,10 @@ namespace CookBook
             Console.Clear();
 
             int i = 0;
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Update a recipe");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- By updating a recipe you have to change all its features");
             Console.WriteLine("- Type the name of the recipe you want to change below");
             Console.WriteLine("- You can only update an existing recipe");
@@ -123,10 +123,10 @@ namespace CookBook
         public void AddCmdDisplay() {
             Console.Clear();
             int i = 0;
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Add a recipe");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine("About:");
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\nAbout:");
             Console.WriteLine("- This command lets you add a new recipe with all its characteristics");
             Console.WriteLine("- After you enter an ingredient and its ml or grams, press Enter to enter new ingredient");
             Console.WriteLine("- After you entered your ingredients enter 'end' as an ingredient to finish your input");
@@ -235,10 +235,10 @@ namespace CookBook
         public void DisplayTop5(string output) {
             int i = 0;
             Console.Clear();
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("Top 5 recipes.");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine(output);
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\n" + output);
         }
 
         /// <summary>
@@ -248,10 +248,10 @@ namespace CookBook
         public void DisplayAllRecipes(string output) {
             int i = 0;
             Console.Clear();
-            for (i = 0; i < 120; i++) Console.Write("-");
+            for (i = 0; i < 122; i++) Console.Write("-");
             for (i = 0; i < 52; i++) Console.Write(" "); Console.WriteLine("All recipes.");
-            for (i = 0; i < 120; i++) Console.Write("-");
-            Console.WriteLine(output);
+            for (i = 0; i < 122; i++) Console.Write("-");
+            Console.WriteLine("\n"+output);
         }
 
         /// <summary>

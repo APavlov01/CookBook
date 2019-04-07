@@ -194,7 +194,7 @@ namespace CookBook {
                     result = "Please enter atleast one ingredient.";
                     display.PrintResult(result);
                 }
-
+                
                 else if (!ingredientArgs.Equals("end")) //Until the 'end' command is typed the the entered ingredients are added to the list of strings 'ingredientsToParse'.
                 {
 
@@ -220,11 +220,14 @@ namespace CookBook {
                     }
                     display.PrintResult(result); //Displaying the 'result' string in the console.
                 }
-
-                else //If the 'end' command is entered after successfully adding atleast one ingredient the process of adding ingredients to the recipe is finished.
-                { 
+                else if (ingredientArgs.Equals("end"))//If the 'end' command is entered after successfully adding atleast one ingredient the process of adding ingredients to the recipe is finished.
+                {
                     break;
                 }
+                //else 
+                //{ 
+                //    break;
+                //}
 
             }
 

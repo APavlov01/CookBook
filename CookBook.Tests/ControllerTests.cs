@@ -43,7 +43,7 @@ namespace Tests
         public void ValidateRecipeNameTestContainsInDatabase()
         {
             Controller controller = new Controller();
-            var result = controller.ValidateRecipeName("soup");
+            var result = controller.ValidateRecipeName("apple cake");
             var expectedresult = 0;
             Assert.AreEqual(expectedresult, result);
         }
@@ -138,7 +138,7 @@ namespace Tests
         {
             Controller controller = new Controller();
             RecipeContext recipeContext = new RecipeContext();
-            Recipe recipe = new Recipe("soup", "tomato 3", "vari domati i si ti");
+            Recipe recipe = new Recipe("tomato soup", "tomato 3", "vari domati i si ti");
             Rating rating = new Rating(4, recipe);
             double result = controller.CalculateRating(recipe);
             double expectedResult = 4;

@@ -410,13 +410,10 @@ namespace CookBook {
                 }
                 catch
                 {
+                    return 0;
                 }
-                return 0;
+                
             }
-            
-          
-
-
             //After the validation the ingredient is accepted as valid and the method returns 1;
             return 1;
         }
